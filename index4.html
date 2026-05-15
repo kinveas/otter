@@ -361,7 +361,11 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+const supabase = createClient(supabaseUrl, supabaseKey)
+</script>
 <script>
 const supabaseUrl = 'https://kmouggtquexofrrsvtmk.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttb3VnZ3RxdWV4b2ZycnN2dG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTAzOTAsImV4cCI6MjA5NDQyNjM5MH0.ACKaXz68CkGGnQW8A4UUVAov9oBBxBVgHe_ac3Tb-yU'
@@ -463,7 +467,7 @@ function render() {
 
     grid.innerHTML = list.map((m, i) => `
         <div class="movie-card" style="animation-delay:${i * 0.06}s">
-            <div class="movie-poster poster-${m.posterIdx % 8}">
+            <div class="movie-poster poster-${(m.posterIdx ?? 0) % 8}">
                 ${m.emoji}
                 <span class="status-badge ${m.status === 'watched' ? 'badge-watched' : 'badge-watch'}">
                     ${m.status === 'watched' ? '✅ Đã xem' : '🍿 Muốn xem'}
