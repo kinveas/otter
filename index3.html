@@ -286,7 +286,21 @@
     </div>
 </div>
 
+<script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+    // Tận dụng thông tin kết nối từ index4.html của bạn
+    const supabaseUrl = 'https://kmouggtquexofrrsvtmk.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttb3VnZ3RxdWV4b2ZycnN2dG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTAzOTAsImV4cCI6MjA5NDQyNjM5MH0.ACKaXz68CkGGnQW8A4UUVAov9oBBxBVgHe_ac3Tb-yU'
+
+    window.supabase = createClient(supabaseUrl, supabaseKey);
+    window.dispatchEvent(new Event("supabase-ready"));
+</script>
+
 <script>
+window.addEventListener("supabase-ready", () => {
+    const supabase = window.supabase;
+
     /* === HOA ANH ĐÀO RƠI (Giữ nguyên) === */
     (function () {
         const canvas = document.getElementById('sakura-canvas'); const ctx = canvas.getContext('2d');
@@ -320,7 +334,7 @@
     });
 
     /* ====================================================
-       HỆ THỐNG QUẢN LÝ MÔN HỌC & FILE TÀI LIỆU
+       HỆ THỐNG QUẢN LÝ MÔN HỌC & SUPABASE STORAGE
     ==================================================== */
     let subjects = JSON.parse(localStorage.getItem('hinhnhan_subjects') || '[]');
     let filesData = JSON.parse(localStorage.getItem('hinhnhan_files') || '{}');
@@ -328,7 +342,6 @@
     let currentViewingSubject = "";
     const mainGrid = document.getElementById('mainGrid');
 
-    // 1. Render các môn học động (Do người dùng thêm)
     function renderDynamicSubjects() {
         document.querySelectorAll('.dynamic-card').forEach(c => c.remove());
         const isExpanded = document.getElementById('fadeOverlay').classList.contains('hidden');
@@ -339,7 +352,6 @@
             card.style.background = 'linear-gradient(135deg, #e0c3fc, #8ec5fc)';
             card.style.color = '#fff'; card.style.gridColumn = 'span 1';
 
-            // Bấm vào card thì mở Modal File
             card.onclick = () => openSubjectDetail(sub.title);
 
             card.innerHTML = `
@@ -352,8 +364,7 @@
         if (isExpanded) { document.getElementById('bentoWrapper').style.height = 'auto'; }
     }
 
-    // 2. Logic đóng/mở Modal
-    function closeModals() {
+    window.closeModals = function() {
         document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
         document.getElementById('inputSubTitle').value = '';
         document.getElementById('inputSubTag').value = '';
@@ -371,23 +382,28 @@
         }
     });
 
-    // 3. Logic Tạo Môn Mới
-    window.saveNewSubject = function() {
+    // 1. UPLOAD FILE VÀO SUPABASE KHI TẠO MÔN MỚI
+    window.saveNewSubject = async function() {
         const title = document.getElementById('inputSubTitle').value.trim();
         const tag = document.getElementById('inputSubTag').value.trim() || "Môn học";
         const fileInput = document.getElementById('inputSubFile');
+        const submitBtn = document.querySelector('#modalAddSubject .btn-submit');
 
         if (!title) { alert("Bạn ơi nhớ nhập tên môn học nhé!"); return; }
+
+        submitBtn.textContent = "Đang tải lên ⏳...";
+        submitBtn.disabled = true;
 
         subjects.push({ id: Date.now(), title, tag });
         localStorage.setItem('hinhnhan_subjects', JSON.stringify(subjects));
 
         if(fileInput.files.length > 0) {
-            const fileName = fileInput.files[0].name;
-            if(!filesData[title]) filesData[title] = [];
-            filesData[title].push({ id: Date.now(), name: fileName });
-            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+            const file = fileInput.files[0];
+            await uploadFileToSupabase(title, file);
         }
+
+        submitBtn.textContent = "Tạo mới 🌸";
+        submitBtn.disabled = false;
 
         closeModals();
         renderDynamicSubjects();
@@ -397,10 +413,9 @@
         }
     };
 
-    // 4. Xóa môn học động
     window.deleteSubject = function(id, e) {
         e.stopPropagation();
-        if(confirm("Bạn muốn xóa môn này và toàn bộ tài liệu bên trong?")) {
+        if(confirm("Bạn muốn xóa môn này (Lưu ý: Bạn cần tự xóa file trên Supabase Dashboard)?")) {
             const subToDelete = subjects.find(s => s.id === id);
             if(subToDelete) {
                 delete filesData[subToDelete.title];
@@ -412,7 +427,6 @@
         }
     };
 
-    // 5. Mở Modal Chi tiết Môn & Vẽ danh sách File
     window.openSubjectDetail = function(title) {
         currentViewingSubject = title;
         document.getElementById('detailTitle').textContent = `Tài liệu: ${title}`;
@@ -429,38 +443,86 @@
             return;
         }
 
+        // Bỏ alert đi, giờ ấn vào là mở thẳng link file luôn!
         listDiv.innerHTML = files.map(f => `
             <div class="file-item">
-                <a href="#" onclick="alert('Đang chạy ở môi trường Local nên chưa tải/mở được file. Khi tích hợp Supabase sẽ click để xem được nha!')">📄 ${f.name}</a>
-                <button class="del-file-btn" onclick="deleteFile(${f.id})" title="Xóa file">×</button>
+                <a href="${f.url}" target="_blank">📄 ${f.name}</a>
+                <button class="del-file-btn" onclick="deleteFile(${f.id}, '${f.path}')" title="Xóa file">×</button>
             </div>
         `).join('');
     }
 
-    // 6. Xóa File & Thêm File trong Modal Chi Tiết
-    window.deleteFile = function(fileId) {
-        if(confirm("Xóa tài liệu này?")) {
+    // 2. UPLOAD THÊM FILE TRONG CHI TIẾT MÔN
+    window.uploadMoreFile = async function() {
+        const fileInput = document.getElementById('inputUploadMoreFile');
+        if(fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const originalText = fileInput.nextElementSibling.textContent;
+            fileInput.nextElementSibling.textContent = "Đang đẩy lên Cloud ☁️...";
+
+            await uploadFileToSupabase(currentViewingSubject, file);
+
+            fileInput.nextElementSibling.textContent = originalText;
+            fileInput.value = '';
+            renderFileList();
+        }
+    };
+
+    // HÀM LÕI: ĐẨY FILE LÊN SUPABASE
+    async function uploadFileToSupabase(subjectTitle, file) {
+        // Tạo đường dẫn file (VD: Toan/169123_baitap.pdf) để tránh trùng tên
+        const safeSubject = subjectTitle.replace(/[^a-zA-Z0-9]/g, '_');
+        const filePath = `${safeSubject}/${Date.now()}_${file.name}`;
+
+        // 1. Tải file lên Supabase Storage
+        const { data, error } = await supabase.storage
+            .from('study_materials')
+            .upload(filePath, file);
+
+        if (error) {
+            console.error(error);
+            alert("Lỗi tải file lên Cloud: " + error.message);
+            return;
+        }
+
+        // 2. Lấy link xem công khai (Public URL)
+        const { data: publicUrlData } = supabase.storage
+            .from('study_materials')
+            .getPublicUrl(filePath);
+
+        // 3. Lưu thông tin file (Tên, Link, Đường dẫn) vào hệ thống
+        if(!filesData[subjectTitle]) filesData[subjectTitle] = [];
+        filesData[subjectTitle].push({
+            id: Date.now(),
+            name: file.name,
+            url: publicUrlData.publicUrl, // Link để xem trực tiếp
+            path: filePath                // Path để sau này dùng để xóa file
+        });
+        localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+    }
+
+    // 3. XÓA FILE TRÊN CẢ LƯU TRỮ LẪN SUPABASE
+    window.deleteFile = async function(fileId, filePath) {
+        if(confirm("Xóa vĩnh viễn tài liệu này khỏi Cloud?")) {
+            // Xóa file trên Supabase Storage
+            const { error } = await supabase.storage
+                .from('study_materials')
+                .remove([filePath]);
+
+            if (error) {
+                console.error(error);
+                alert("Lỗi xóa file trên Cloud!");
+            }
+
+            // Xóa thông tin file ở giao diện
             filesData[currentViewingSubject] = filesData[currentViewingSubject].filter(f => f.id !== fileId);
             localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
             renderFileList();
         }
     };
 
-    window.uploadMoreFile = function() {
-        const fileInput = document.getElementById('inputUploadMoreFile');
-        if(fileInput.files.length > 0) {
-            const fileName = fileInput.files[0].name;
-            if(!filesData[currentViewingSubject]) filesData[currentViewingSubject] = [];
-
-            filesData[currentViewingSubject].push({ id: Date.now(), name: fileName });
-            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
-
-            fileInput.value = '';
-            renderFileList();
-        }
-    };
-
     renderDynamicSubjects();
+});
 </script>
 </body>
 </html>
