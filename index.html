@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hình Nhân - Trạm Rái Cá 3D Interactive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* === THIẾT LẬP NỀN VÀ CURSOR === */
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Quicksand', sans-serif;
+            background-color: #000; overflow: hidden;
+            cursor: none; /* Dùng chuột rái cá */
+        }
+
+        .hero-section {
+            height: 100vh; width: 100%;
+            position: relative; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* Ảnh nền (Updated blur and contrast for better overall visibility) */
+        .bg-animated {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('assets/raica.jpg'); /* File ảnh rái cá của bạn */
+            background-size: cover; background-position: center;
+            z-index: 1;
+            animation: kenBurns 20s infinite alternate linear;
+        }
+
+        .bg-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.15); /*overlay tối nhẹ */
+            z-index: 2;
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.08) translate(-1%, -1%); }
+        }
+
+        /* === 7. NÚT BẤM BÍ MẬT: MẶT TRỜI (GÓC TRÊN CÙNG BÊN PHẢI) (New) === */
+        .secret-sun {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #ffeb3b; /* Màu vàng mặt trời cơ bản */
+            border-radius: 50%;
+            cursor: none; /* Giữ con trỏ rái cá */
+            z-index: 300; /* Nằm trên cả Glass Card và Nút chính */
+            box-shadow: 0 0 15px rgba(255, 235, 59, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Hiệu ứng khi rê chuột rái cá vào Mặt Trời */
+        .secret-sun:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 0 25px rgba(255, 235, 59, 0.9);
+        }
+
+        /* === THẺ KÍNH (Đã giảm độ blur) (New update from image generation) === */
+        .glass-card {
+            position: relative; z-index: 100;
+            padding: 50px 60px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px); /* --- Giảm độ blur ở đây (dựa trên gen image) --- */
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover { transform: translateY(-3px); }
+
+        /* === HIỆU ỨNG CHỮ === */
+        h1 {
+            font-size: clamp(3.5rem, 12vw, 7rem); margin: 0;
+            margin-bottom: 40px; font-weight: 700; letter-spacing: -2px;
+            background: linear-gradient(90deg, #ff9a9e, #18ebf2, #a18cd1, #ff9a9e);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradientFlow 4s linear infinite, textPulse 2s ease-in-out infinite alternate;
+            text-shadow: 0 4px 15px rgba(24, 235, 242, 0.2);
+            user-select: none;
+        }
+
+        @keyframes gradientFlow { to { background-position: 200% center; } }
+        @keyframes textPulse { 0% { transform: scale(1); } 100% { transform: scale(1.03); } }
+
+        /* === NÚT BẤM CHÍNH (Đã sửa lỗi không bị mất tích) === */
+        #main-btn {
+            position: absolute;
+            top: 60%; /* Đặt vị trí ban đầu */
+            left: 50%;
+            transform: translate(-50%, -50%); /* Căn giữa */
+            padding: 16px 45px;
+            font-size: 1.2rem; font-weight: 700;
+            color: white;
+            background: linear-gradient(45deg, #26d0ce, #1a2980);
+            border: none; border-radius: 50px;
+            cursor: none; z-index: 200; /* Nằm trên Glass Card */
+            transition: background 0.5s ease,
+                        left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        border-radius 0.3s ease;
+            box-shadow: 0 8px 25px rgba(38, 208, 206, 0.3);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        /* === CON TRỎ CHUỘT VÀ VỆT ĐUÔI === */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 30px; height: 30px;
+            pointer-events: none; z-index: 1000;
+            transform: translate(-50%, -50%);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem;
+        }
+
+        .cursor-trail {
+            position: fixed; width: 8px; height: 8px;
+            border-radius: 50%; background-color: rgba(38, 208, 206, 0.7);
+            pointer-events: none; z-index: 999;
+            animation: trailFade 0.6s forwards ease-out;
+        }
+
+        @keyframes trailFade { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0); opacity: 0; } }
+
+        /* === STYLE MƯA RÁI CÁ === */
+        .otter-rain {
+            position: absolute; top: -100px;
+            z-index: 50; pointer-events: none;
+            animation: fall linear forwards;
+            transition: transform 0.2s ease-out;
+            transform-origin: center center;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(var(--rot-end)); }
+        }
+    </style>
+</head>
+<body>
+<div class="transition-wipe" id="wipe">
+    <div class="wipe-content">
+        <span class="wipe-loader">🦦</span>
+        <p>Đang đến Trạm Giao Điểm...</p>
+    </div>
+</div>
+
+<style>
+    .transition-wipe {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Nằm ngoài màn hình bên trái */
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); /* Màu cam hồng rái cá */
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.6s cubic-bezier(0.77, 0, 0.175, 1); /* Hiệu ứng lướt mượt */
+    }
+
+    /* Trạng thái khi đang lướt qua */
+    .transition-wipe.active {
+        left: 0;
+    }
+
+    /* Trạng thái khi thoát ra bên phải */
+    .transition-wipe.exit {
+        left: 100%;
+    }
+
+    .wipe-content {
+        text-align: center;
+        color: white;
+        font-family: 'Quicksand', sans-serif;
+    }
+
+    .wipe-loader {
+        font-size: 4rem;
+        display: block;
+        animation: otterJump 0.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes otterJump {
+        from { transform: translateY(0); }
+        to { transform: translateY(-20px); }
+    }
+</style>
+    <div class="custom-cursor" id="custom-cursor">🦦</div>
+
+    <div class="secret-sun" id="secret-sun-btn"></div>
+
+    <div class="hero-section" id="hero">
+        <div class="bg-animated"></div>
+        <div class="bg-overlay"></div>
+
+        <div class="glass-card">
+            <h1>Hình Nhân</h1>
+        </div>
+
+        <button id="main-btn">Get Start!</button>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="assets/earrings.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const btn = document.getElementById('main-btn');
+        const sunBtn = document.getElementById('secret-sun-btn');
+        const music = document.getElementById('bg-music');
+        const cursor = document.getElementById('custom-cursor');
+        const hero = document.getElementById('hero');
+        let isFirstClick = true;
+        let otters = [];
+
+        // === 1. XỬ LÝ CON TRỎ CHUỘT VÀ VỆT ĐUÔI ===
+        document.addEventListener('mousemove', function(e) {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            createCursorTrail(e.clientX, e.clientY);
+            handleOtterAvoidance(e.clientX, e.clientY);
+        });
+
+        function createCursorTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.classList.add('cursor-trail');
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            const size = Math.random() * 6 + 4;
+            trail.style.width = size + 'px';
+            trail.style.height = size + 'px';
+            document.body.appendChild(trail);
+            setTimeout(() => { trail.remove(); }, 600);
+        }
+
+        // === 2. XỬ LÝ SỰ KIỆN CLICK NÚT CHÍNH ===
+        btn.addEventListener('click', function() {
+            if (isFirstClick) {
+                music.play().catch(e => console.log("Cần click để bật nhạc"));
+                setInterval(createOtterRain, 250); // Tốc độ mưa rái cá rơi
+                btn.style.background = 'linear-gradient(45deg, #ff9a9e, #fad0c4)';
+                btn.style.borderRadius = '50px';
+
+                moveButton();
+                isFirstClick = false;
+            } else {
+                moveButton();
+            }
+        });
+
+        // === 7. XỬ LÝ CLICK NÚT BÍ MẬT: MẶT TRỜI (New) ===
+ const wipe = document.getElementById('wipe');
+
+sunBtn.addEventListener('click', function() {
+    // 1. Kích hoạt tấm màn lướt vào
+    wipe.classList.add('active');
+
+    // 2. Đợi lướt xong (0.6s) rồi mới thực sự chuyển trang
+    setTimeout(() => {
+        window.location.href = 'index2.html';
+    }, 650);
+});
+
+        // === 3. TẠO MƯA RÁI CÁ (STICKERS PNG) ===
+        function createOtterRain() {
+            const otter = document.createElement('img');
+            const stickerNumber = Math.random() < 0.5 ? '1' : '2';
+            otter.src = `assets/${stickerNumber}.png`; // Sticker PNG của bạn
+            otter.classList.add('otter-rain');
+
+            const startPos = Math.random() * window.innerWidth;
+            const size = Math.random() * (50 - 25) + 25;
+            const duration = Math.random() * (4 - 2.5) + 2.5;
+            const rotEnd = Math.random() * 720;
+
+            otter.style.left = startPos + 'px';
+            otter.style.width = size + 'px';
+            otter.style.animationDuration = duration + 's';
+            otter.style.setProperty('--rot-end', rotEnd + 'deg');
+            otter.style.opacity = Math.random() * (1 - 0.7) + 0.7;
+
+            hero.appendChild(otter);
+
+            otters.push({
+                element: otter,
+                baseX: startPos,
+                baseSize: size
+            });
+
+            setTimeout(() => {
+                otter.remove();
+                otters = otters.filter(o => o.element !== otter);
+            }, duration * 1000);
+        }
+
+        // === 4. LOGIC NÉ TRÁNH CHUỘT ===
+        function handleOtterAvoidance(mouseX, mouseY) {
+            const avoidRadius = 120;
+
+            otters.forEach(otter => {
+                const rect = otter.element.getBoundingClientRect();
+                const otterCenterX = rect.left + rect.width / 2;
+                const otterCenterY = rect.top + rect.height / 2;
+
+                const dx = otterCenterX - mouseX;
+                const dy = otterCenterY - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < avoidRadius) {
+                    const angle = Math.atan2(dy, dx);
+                    const repulsionIntensity = (avoidRadius - distance) / avoidRadius;
+                    const pushAmount = repulsionIntensity * 60;
+
+                    const pushX = Math.cos(angle) * pushAmount;
+                    const pushY = Math.sin(angle) * pushAmount;
+
+                    otter.element.style.transform = `translate(${pushX}px, ${pushY}px) rotate(var(--rot-end))`;
+                } else {
+                    otter.element.style.transform = `translate(0, 0) rotate(var(--rot-end))`;
+                }
+            });
+        }
+
+        // === 5. DỊCH CHUYỂN NÚT (Đã fix) ===
+        function moveButton() {
+            const padding = 120;
+            const maxX = window.innerWidth - btn.offsetWidth - padding;
+            const maxY = window.innerHeight - btn.offsetHeight - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            // Cập nhật transform cho mượt và căn giữa đúng
+            btn.style.transform = `translate(-50%, -50%)`;
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+    </script>
+</body>
+</html>

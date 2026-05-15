@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Góc Học Tập - Hình Nhân 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* === NỀN KẸO BÔNG === */
+        body, html {
+            margin: 0; padding: 0;
+            background: linear-gradient(-45deg, #fff0f5, #ffe4e1, #e0f7fa, #f3e5f5);
+            background-size: 400% 400%;
+            animation: breatheBg 15s ease infinite;
+            color: #5d4037; font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden; display: block;
+        }
+        @keyframes breatheBg { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        #sakura-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .main-layout { position: relative; z-index: 1; padding: 100px 20px 60px 20px; display: flex; justify-content: center; }
+
+        /* Nút quay lại */
+        .back-btn {
+            position: fixed; top: 40px; left: 40px; color: #ff8fa3; text-decoration: none; font-weight: 800; font-size: 1.1rem;
+            display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.75); backdrop-filter: blur(12px);
+            padding: 10px 22px; border-radius: 30px; box-shadow: 0 4px 15px rgba(255,143,163,0.15); transition: all 0.3s ease; z-index: 100;
+        }
+        .back-btn:hover { background: #fff; transform: translateX(-5px); box-shadow: 0 6px 20px rgba(255,143,163,0.3); }
+
+        /* === WRAPPER & OVERLAY === */
+        .bento-wrapper { position: relative; width: 100%; max-width: 1100px; height: 700px; overflow: hidden; transition: height 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fade-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 350px;
+            background: linear-gradient(to bottom, rgba(255,240,245,0) 0%, rgba(255,236,242,0.6) 40%, rgba(255,234,240,0.96) 75%, rgba(255,233,239,1) 100%);
+            display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; z-index: 20; transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .fade-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .btn-expand {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #fff; padding: 16px 30px; font-size: 1.1rem; font-weight: 800;
+            font-family: inherit; border-radius: 50px; cursor: pointer; border: none; box-shadow: 0 10px 25px rgba(255,154,158,0.4); transition: transform 0.3s ease, box-shadow 0.3s ease; margin: 0 10px;
+        }
+        .btn-expand.add-sub { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); color: #5d4037; box-shadow: 0 10px 25px rgba(161,196,253,0.4); }
+        .btn-expand:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255,154,158,0.6); }
+        .btn-expand.add-sub:hover { box-shadow: 0 15px 35px rgba(161,196,253,0.6); }
+
+        /* === BENTO GRID === */
+        .bento-container { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(260px, auto); gap: 24px; }
+        .bento-card {
+            border-radius: 36px; padding: 35px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer; box-shadow: 0 10px 30px rgba(255,192,203,0.2); transition: box-shadow 0.4s ease, transform 0.4s ease; opacity: 1; transform: translateY(0); border: 2px solid rgba(255,255,255,0.4);
+        }
+        .hidden-card { opacity: 0; pointer-events: none; }
+        .entrance-anim { animation: slideUpFade 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(80px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes cuteBounce { 0%, 100% { transform: translateY(-8px); } 50% { transform: translateY(-12px); } }
+        .bento-card:hover { animation: cuteBounce 1s ease-in-out infinite; box-shadow: 0 20px 40px rgba(255,143,163,0.3); z-index: 5; }
+
+        /* Màu Card Tĩnh (Đầy đủ 12 ô) */
+        .card-major { grid-column: span 2; background: linear-gradient(135deg, #ffafbd, #ffc3a0); color: #fff; animation-delay: 0.1s; }
+        .card-english { grid-column: span 1; background: linear-gradient(135deg, #fbc2eb, #a6c1ee); color: #fff; animation-delay: 0.2s; }
+        .card-finance { grid-column: span 1; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); animation-delay: 0.3s; }
+        .card-mindset { grid-column: span 1; background: #fff0f5; border: 2px solid #ffb7b2; animation-delay: 0.4s; }
+        .card-volleyball { grid-column: span 1; grid-row: span 2; background: linear-gradient(135deg, #a1c4fd, #c2e9fb); color: #fff; animation-delay: 0.5s; }
+        .card-startup { grid-column: span 2; background: linear-gradient(135deg, #84fab0, #8fd3f4); color: #fff; animation-delay: 0.6s; }
+        .card-grooming { grid-column: span 1; background: #ffdac1; }
+        .card-career { grid-column: span 2; background: linear-gradient(135deg, #e0c3fc, #8ec5fc); color: #fff; }
+        .card-gym { grid-column: span 1; background: #ffb7b2; color: #fff; }
+        .card-tools { grid-column: span 1; background: #b5ead7; }
+        .card-2030 { grid-column: span 2; background: rgba(255,255,255,0.8); }
+        .card-dc { grid-column: span 2; background: #d5aaaf; color: #fff; }
+
+        /* Typography */
+        .tag { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.85; margin-bottom: 10px; display: block; }
+        .title { font-size: 1.8rem; font-weight: 800; line-height: 1.2; margin: 0 0 10px 0; letter-spacing: -0.5px; }
+        .desc { font-size: 1rem; opacity: 0.9; margin: 0; line-height: 1.5; max-width: 90%; }
+        .card-english .desc, .card-finance .desc, .card-mindset .desc, .card-grooming .desc, .card-gym .desc, .card-tools .desc { display: none; }
+        .card-english .title, .card-finance .title, .card-mindset .title, .card-grooming .title, .card-gym .title, .card-tools .title { font-size: 1.5rem; }
+
+        /* Nút hành động góc dưới */
+        .action-btn {
+            position: absolute; bottom: 25px; right: 25px; width: 45px; height: 45px; border-radius: 50%;
+            background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+            overflow: hidden; transition: all 0.4s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: #5d4037;
+        }
+        .action-btn .plus { position: absolute; font-size: 24px; font-weight: 700; transition: transform 0.4s ease, opacity 0.4s ease; }
+        .action-btn .arrow { position: absolute; font-size: 14px; font-weight: bold; transform: translateX(-40px); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease; }
+        .bento-card:hover .action-btn { background: #fff; color: #ff8fa3; transform: scale(1.1); box-shadow: 0 8px 20px rgba(255,143,163,0.3); }
+        .bento-card:hover .plus { transform: scale(0) rotate(90deg); opacity: 0; }
+        .bento-card:hover .arrow { transform: translateX(0); opacity: 1; }
+
+        .del-action:hover .action-btn { background: #ff6b6b !important; color: white !important; }
+
+        /* === MODALS (Bảng thông báo) === */
+        .modal-backdrop {
+            position: fixed; inset: 0; background: rgba(255, 236, 242, 0.85); backdrop-filter: blur(10px); z-index: 500;
+            display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-backdrop.open { opacity: 1; visibility: visible; }
+        .modal {
+            background: #fff; border: 2px solid rgba(255, 182, 193, 0.4); box-shadow: 0 20px 50px rgba(255, 143, 163, 0.2);
+            border-radius: 28px; padding: 36px; width: 100%; max-width: 450px;
+            transform: translateY(30px) scale(0.96); transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+        }
+        .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+        .modal h2 { margin: 0 0 24px; font-size: 1.6rem; font-weight: 800; color: #ff8fa3; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 800; color: #a88; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-input {
+            width: 100%; padding: 12px 16px; background: #fff0f5; border: 1px solid #ffdae0;
+            border-radius: 14px; outline: none; color: #5d4037; font-family: inherit; font-size: 0.95rem; font-weight: 600; transition: all 0.25s;
+        }
+        .form-input:focus { border-color: #ff8fa3; background: #fff; box-shadow: 0 0 0 4px rgba(255, 143, 163, 0.15); }
+
+        /* Upload File UI */
+        .file-upload-box {
+            border: 2px dashed #ffdae0; border-radius: 14px; padding: 20px; text-align: center;
+            background: #fffafa; cursor: pointer; transition: all 0.2s; position: relative;
+        }
+        .file-upload-box:hover { border-color: #ff8fa3; background: #fff0f5; }
+        .file-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .file-name-display { display: block; margin-top: 10px; font-size: 0.85rem; color: #ff8fa3; font-weight: 700; }
+
+        /* File List trong Modal Chi Tiết */
+        .file-list { margin-top: 15px; max-height: 200px; overflow-y: auto; padding-right: 5px; }
+        .file-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #fff0f5; padding: 12px 15px; border-radius: 12px; margin-bottom: 10px;
+            font-size: 0.9rem; font-weight: 700; border: 1px solid #ffdae0;
+        }
+        .file-item a { color: #5d4037; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .file-item a:hover { color: #ff8fa3; }
+        .file-item .del-file-btn { color: #ff6b6b; cursor: pointer; background: none; border: none; font-size: 1.1rem; }
+
+        .modal-actions { display: flex; gap: 10px; margin-top: 24px; }
+        .modal-btn {
+            flex: 1; padding: 12px; border-radius: 14px; font-family: inherit; font-size: 0.95rem; font-weight: 800; cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .btn-cancel { background: #ffe4e1; color: #a88; }
+        .btn-cancel:hover { background: #ffdae0; }
+        .btn-submit { background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #fff; box-shadow: 0 6px 15px rgba(255, 143, 163, 0.3); }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 143, 163, 0.4); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(255, 143, 163, 0.3); border-radius: 3px; }
+
+        @media (max-width: 900px) {
+            .bento-container { grid-template-columns: 1fr; grid-auto-rows: minmax(200px, auto); }
+            .bento-card { grid-column: span 1 !important; grid-row: span 1 !important; }
+            .bento-wrapper { height: 1000px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="sakura-canvas"></canvas>
+<a href="index2.html" class="back-btn">← Trạm Giao Điểm 🦦</a>
+
+<div class="main-layout">
+    <div class="bento-wrapper" id="bentoWrapper">
+        <div class="bento-container" id="mainGrid">
+
+            <div class="bento-card card-major entrance-anim" onclick="openSubjectDetail('Luật Doanh nghiệp')">
+                <div><span class="tag">🏢 Chuyên ngành</span><h2 class="title">Luật Doanh nghiệp</h2><p class="desc">Nền tảng pháp lý vững chắc cho thương trường.</p></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-english entrance-anim" onclick="openSubjectDetail('Luật Thương mại')">
+                <div><span class="tag">⚖️ Thương mại</span><h2 class="title">Luật Thương mại</h2></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-finance entrance-anim" onclick="openSubjectDetail('Luật Hợp đồng')">
+                <div><span class="tag">📝 Dân sự</span><h2 class="title">Luật Hợp đồng</h2></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-mindset entrance-anim" onclick="openSubjectDetail('Luật Quốc tế')">
+                <div><span class="tag">🌍 Toàn cầu</span><h2 class="title">Luật Quốc tế</h2></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+           <div class="bento-card card-volleyball entrance-anim" onclick="openSubjectDetail('Tư tưởng Hồ Chí Minh')">
+                <div style="display: flex; flex-direction: column; height: 100%;">
+                    <span class="tag">🇻🇳 Lý luận</span>
+                    <h2 class="title">Tư tưởng HCM</h2>
+                    <p class="desc">Kim chỉ nam tư tưởng và hành động.</p>
+
+                    <img src="assets/15.webp" alt="Tư tưởng HCM" style="width: 100%; flex: 1; min-height: 0; object-fit: cover; border-radius: 20px; margin-top: 20px; margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                </div>
+
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-startup entrance-anim" onclick="openSubjectDetail('Luật sở hữu trí tuệ')">
+                <div><span class="tag">💡 Sáng tạo</span><h2 class="title">Luật sở hữu trí tuệ</h2><p class="desc">Bảo vệ chất xám và ý tưởng đột phá.</p></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-grooming hidden-card" onclick="openSubjectDetail('Kinh tế chính trị')">
+                <div><span class="tag">📈 Kinh tế</span><h2 class="title">Kinh tế chính trị</h2></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-career hidden-card" onclick="openSubjectDetail('Luật Tố tụng hình sự')">
+                <div><span class="tag">⚖️ Hình sự</span><h2 class="title">Tố tụng hình sự</h2><p class="desc">Quy trình tố tụng chặt chẽ, bảo vệ công lý.</p></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-gym hidden-card" onclick="openSubjectDetail('Luật Tố tụng dân sự')">
+                <div><span class="tag">👨‍⚖️ Dân sự</span><h2 class="title">Tố tụng dân sự</h2></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-tools hidden-card" onclick="openSubjectDetail('Chủ nghĩa xã hội học')">
+                <div><span class="tag">☭ Triết học</span><h2 class="title">CNXH Học</h2></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-2030 hidden-card" onclick="openSubjectDetail('Luật Thương mại quốc tế')">
+                <div><span class="tag">🚢 Giao thương</span><h2 class="title">Thương mại QT</h2><p class="desc">Pháp lý trong bối cảnh hội nhập kinh tế.</p></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+            <div class="bento-card card-dc hidden-card" onclick="openSubjectDetail('Pháp luật về bảo hiểm quốc tế')">
+                <div><span class="tag">🛡️ Bảo hiểm</span><h2 class="title">Bảo hiểm QT</h2><p class="desc">Giảm thiểu rủi ro trong giao thương quốc tế.</p></div>
+                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
+            </div>
+
+        </div>
+
+        <div class="fade-overlay" id="fadeOverlay">
+            <button class="btn-expand" id="btnExpand">Mở rộng không gian 🌸</button>
+            <button class="btn-expand add-sub" id="btnAddSubject">+ Thêm Môn 📚</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="modalAddSubject">
+    <div class="modal">
+        <h2>✨ Thêm Không Gian Mới</h2>
+        <div class="form-group">
+            <label class="form-label">Tên Môn / Chủ đề</label>
+            <input class="form-input" id="inputSubTitle" type="text" placeholder="VD: Lịch sử Đảng">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Phân loại (Tag)</label>
+            <input class="form-input" id="inputSubTag" type="text" placeholder="VD: Đại cương">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Đính kèm tài liệu đầu tiên (Tuỳ chọn)</label>
+            <div class="file-upload-box">
+                <input type="file" id="inputSubFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png">
+                <span>📁 Nhấn để chọn file tài liệu</span>
+                <span class="file-name-display" id="displayFileName"></span>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn btn-cancel" onclick="closeModals()">Hủy</button>
+            <button class="modal-btn btn-submit" onclick="saveNewSubject()">Tạo mới 🌸</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="modalSubjectDetail">
+    <div class="modal">
+        <h2 id="detailTitle">Tên Môn Học</h2>
+
+        <div class="form-group">
+            <div class="file-upload-box" style="padding: 15px;">
+                <input type="file" id="inputUploadMoreFile" onchange="uploadMoreFile()">
+                <span>☁️ Tải thêm tài liệu vào đây</span>
+            </div>
+        </div>
+
+        <div class="form-label">Danh sách tài liệu</div>
+        <div class="file-list" id="detailFileList">
+            </div>
+
+        <div class="modal-actions">
+            <button class="modal-btn btn-cancel" onclick="closeModals()">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* === HOA ANH ĐÀO RƠI (Giữ nguyên) === */
+    (function () {
+        const canvas = document.getElementById('sakura-canvas'); const ctx = canvas.getContext('2d');
+        const FALL_SPEED = 50; const PETAL_COUNT = 38;
+        const COLORS = ['rgba(255,182,193,0.85)', 'rgba(255,160,180,0.80)', 'rgba(255,200,210,0.75)', 'rgba(252,220,230,0.70)', 'rgba(255,145,175,0.80)', 'rgba(248,200,215,0.65)'];
+        let W, H, petals = [];
+        function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+        function createPetal(startY) { return { x: Math.random() * W, y: startY !== undefined ? startY : Math.random() * -H, rx: 7 + Math.random() * 7, ry: 4 + Math.random() * 4, rot: Math.random() * Math.PI * 2, vy: FALL_SPEED * (0.85 + Math.random() * 0.3), swingAmp: 18 + Math.random() * 22, swingFreq: 0.4 + Math.random() * 0.5, swingOff: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 1.2, color: COLORS[Math.floor(Math.random() * COLORS.length)], t: Math.random() * 10 }; }
+        function init() { resize(); petals = []; for (let i = 0; i < PETAL_COUNT; i++) petals.push(createPetal(Math.random() * H)); }
+        let last = null;
+        function draw(ts) {
+            if (!last) last = ts; const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+            ctx.clearRect(0, 0, W, H);
+            petals.forEach(p => {
+                p.t += dt; p.y += p.vy * dt; p.rot += p.rotSpeed * dt;
+                const swing = Math.sin(p.t * p.swingFreq * Math.PI * 2 + p.swingOff) * p.swingAmp; const drawX = p.x + swing;
+                if (p.y - p.ry > H) { Object.assign(p, createPetal(-20)); p.t = 0; return; }
+                ctx.save(); ctx.translate(drawX, p.y); ctx.rotate(p.rot); ctx.beginPath(); ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill(); ctx.strokeStyle = 'rgba(220,130,150,0.25)'; ctx.lineWidth = 0.5; ctx.stroke(); ctx.restore();
+            }); requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', resize); init(); requestAnimationFrame(draw);
+    })();
+
+    /* === MỞ RỘNG KHÔNG GIAN (Giữ nguyên) === */
+    document.addEventListener('animationend', function (e) { if (e.animationName === 'slideUpFade') { e.target.classList.remove('entrance-anim'); e.target.style.animationDelay = '0s'; } });
+    document.getElementById('btnExpand').addEventListener('click', function () {
+        const wrapper = document.getElementById('bentoWrapper'); const overlay = document.getElementById('fadeOverlay'); const hiddenCards = document.querySelectorAll('.hidden-card');
+        overlay.classList.add('hidden'); wrapper.style.height = wrapper.scrollHeight + 'px';
+        hiddenCards.forEach((card, i) => { card.style.animationDelay = `${i * 0.1}s`; card.classList.remove('hidden-card'); card.classList.add('entrance-anim'); });
+        setTimeout(() => { wrapper.style.height = wrapper.scrollHeight + 'px'; setTimeout(() => { wrapper.style.height = 'auto'; }, 900); }, 150);
+    });
+
+    /* ====================================================
+       HỆ THỐNG QUẢN LÝ MÔN HỌC & FILE TÀI LIỆU
+    ==================================================== */
+    let subjects = JSON.parse(localStorage.getItem('hinhnhan_subjects') || '[]');
+    let filesData = JSON.parse(localStorage.getItem('hinhnhan_files') || '{}');
+
+    let currentViewingSubject = "";
+    const mainGrid = document.getElementById('mainGrid');
+
+    // 1. Render các môn học động (Do người dùng thêm)
+    function renderDynamicSubjects() {
+        document.querySelectorAll('.dynamic-card').forEach(c => c.remove());
+        const isExpanded = document.getElementById('fadeOverlay').classList.contains('hidden');
+
+        subjects.forEach((sub) => {
+            const card = document.createElement('div');
+            card.className = `bento-card del-action dynamic-card ${isExpanded ? 'entrance-anim' : 'hidden-card'}`;
+            card.style.background = 'linear-gradient(135deg, #e0c3fc, #8ec5fc)';
+            card.style.color = '#fff'; card.style.gridColumn = 'span 1';
+
+            // Bấm vào card thì mở Modal File
+            card.onclick = () => openSubjectDetail(sub.title);
+
+            card.innerHTML = `
+                <div><span class="tag">📖 ${sub.tag}</span><h2 class="title" style="font-size: 1.5rem;">${sub.title}</h2></div>
+                <div class="action-btn" onclick="deleteSubject(${sub.id}, event)"><span class="plus">🗑️</span><span class="arrow">Xóa</span></div>
+            `;
+            mainGrid.appendChild(card);
+        });
+
+        if (isExpanded) { document.getElementById('bentoWrapper').style.height = 'auto'; }
+    }
+
+    // 2. Logic đóng/mở Modal
+    function closeModals() {
+        document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+        document.getElementById('inputSubTitle').value = '';
+        document.getElementById('inputSubTag').value = '';
+        document.getElementById('inputSubFile').value = '';
+        document.getElementById('displayFileName').textContent = '';
+    }
+
+    document.getElementById('btnAddSubject').addEventListener('click', () => {
+        document.getElementById('modalAddSubject').classList.add('open');
+    });
+
+    document.getElementById('inputSubFile').addEventListener('change', function() {
+        if(this.files.length > 0) {
+            document.getElementById('displayFileName').textContent = this.files[0].name;
+        }
+    });
+
+    // 3. Logic Tạo Môn Mới
+    window.saveNewSubject = function() {
+        const title = document.getElementById('inputSubTitle').value.trim();
+        const tag = document.getElementById('inputSubTag').value.trim() || "Môn học";
+        const fileInput = document.getElementById('inputSubFile');
+
+        if (!title) { alert("Bạn ơi nhớ nhập tên môn học nhé!"); return; }
+
+        subjects.push({ id: Date.now(), title, tag });
+        localStorage.setItem('hinhnhan_subjects', JSON.stringify(subjects));
+
+        if(fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            if(!filesData[title]) filesData[title] = [];
+            filesData[title].push({ id: Date.now(), name: fileName });
+            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+        }
+
+        closeModals();
+        renderDynamicSubjects();
+
+        if (!document.getElementById('fadeOverlay').classList.contains('hidden')) {
+            document.getElementById('btnExpand').click();
+        }
+    };
+
+    // 4. Xóa môn học động
+    window.deleteSubject = function(id, e) {
+        e.stopPropagation();
+        if(confirm("Bạn muốn xóa môn này và toàn bộ tài liệu bên trong?")) {
+            const subToDelete = subjects.find(s => s.id === id);
+            if(subToDelete) {
+                delete filesData[subToDelete.title];
+                localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+            }
+            subjects = subjects.filter(s => s.id !== id);
+            localStorage.setItem('hinhnhan_subjects', JSON.stringify(subjects));
+            renderDynamicSubjects();
+        }
+    };
+
+    // 5. Mở Modal Chi tiết Môn & Vẽ danh sách File
+    window.openSubjectDetail = function(title) {
+        currentViewingSubject = title;
+        document.getElementById('detailTitle').textContent = `Tài liệu: ${title}`;
+        renderFileList();
+        document.getElementById('modalSubjectDetail').classList.add('open');
+    };
+
+    function renderFileList() {
+        const listDiv = document.getElementById('detailFileList');
+        const files = filesData[currentViewingSubject] || [];
+
+        if (files.length === 0) {
+            listDiv.innerHTML = `<div style="text-align:center; padding: 20px; opacity:0.6;">Chưa có tài liệu nào. Tải lên ngay nhé! 🦦</div>`;
+            return;
+        }
+
+        listDiv.innerHTML = files.map(f => `
+            <div class="file-item">
+                <a href="#" onclick="alert('Đang chạy ở môi trường Local nên chưa tải/mở được file. Khi tích hợp Supabase sẽ click để xem được nha!')">📄 ${f.name}</a>
+                <button class="del-file-btn" onclick="deleteFile(${f.id})" title="Xóa file">×</button>
+            </div>
+        `).join('');
+    }
+
+    // 6. Xóa File & Thêm File trong Modal Chi Tiết
+    window.deleteFile = function(fileId) {
+        if(confirm("Xóa tài liệu này?")) {
+            filesData[currentViewingSubject] = filesData[currentViewingSubject].filter(f => f.id !== fileId);
+            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+            renderFileList();
+        }
+    };
+
+    window.uploadMoreFile = function() {
+        const fileInput = document.getElementById('inputUploadMoreFile');
+        if(fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            if(!filesData[currentViewingSubject]) filesData[currentViewingSubject] = [];
+
+            filesData[currentViewingSubject].push({ id: Date.now(), name: fileName });
+            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+
+            fileInput.value = '';
+            renderFileList();
+        }
+    };
+
+    renderDynamicSubjects();
+</script>
+</body>
+</html>
