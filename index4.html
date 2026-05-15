@@ -362,20 +362,24 @@
     </div>
 </div>
 <script type="module">
+
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const supabase = createClient(supabaseUrl, supabaseKey)
-</script>
-<script>
 const supabaseUrl = 'https://kmouggtquexofrrsvtmk.supabase.co'
+
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttb3VnZ3RxdWV4b2ZycnN2dG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTAzOTAsImV4cCI6MjA5NDQyNjM5MH0.ACKaXz68CkGGnQW8A4UUVAov9oBBxBVgHe_ac3Tb-yU'
 
-const supabase = window.supabase.createClient(
-  supabaseUrl,
-  supabaseKey
+window.supabase = createClient(
+    supabaseUrl,
+    supabaseKey
 )
+window.dispatchEvent(new Event("supabase-ready"))
+
 </script>
 <script>
+window.addEventListener("supabase-ready", () => {
+
+const supabase = window.supabase;
 (function () {
     const canvas = document.getElementById('star-canvas'); const ctx = canvas.getContext('2d');
     let W, H, stars = [];
@@ -657,6 +661,9 @@ loadMovies();
 });
 
 loadMovies();
+window.toggleFav = toggleFav;
+window.deleteMovie = deleteMovie;
+window.toggleWatched = toggleWatched;
 </script>
 </body>
 </html>
