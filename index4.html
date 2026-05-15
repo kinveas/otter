@@ -398,39 +398,21 @@ let movies = [];
 let filterStatus = 'all'; let filterGenre = 'all'; let searchQuery = ''; let selectedEmoji = '🎬';
 let currentReviewMovieId = null;
 
-async function loadMovies() {
-    try {
-        const { data, error } = await supabase.from('movies').select('*').order('created_at', { ascending: false });
+async function async function loadMovies() {
+    const { data, error, status } = await supabase.from('movies').select('*');
 
-        if (error) {
-            console.error("Supabase Error:", error);
-            alert("⚠️ Lỗi từ Database: " + error.message + "\n(Hãy kiểm tra lại quyền RLS trong Supabase của bạn!)");
-            return;
-        }
-
-        if (data && data.length === 0) {
-            const defaultMovies = [
-                { title: 'Your Name', year: 2016, genre: 'Tình cảm', status: 'watched', fav: true,  emoji: '🌸', posteridx: 5, review: 'Một bộ phim rất hay về sự kết nối.' },
-                { title: 'The Batman', year: 2022, genre: 'Hành động', status: 'watch', fav: false, emoji: '🌙', posteridx: 2, review: '' },
-            ];
-            const insertResult = await supabase.from('movies').insert(defaultMovies);
-            if (insertResult.error) {
-                console.error("Lỗi tạo data mẫu:", insertResult.error);
-                alert("Không thể thêm dữ liệu mẫu. Có thể do RLS chặn INSERT.");
-            } else {
-                const res = await supabase.from('movies').select('*').order('created_at', { ascending: false });
-                movies = res.data || [];
-            }
-        } else {
-            movies = data || [];
-        }
-        render();
-    } catch (err) {
-        console.error(err);
-        alert("⚠️ Lỗi hệ thống khi tải phim: " + err.message);
+    if (error) {
+        console.error("Mã lỗi HTTP:", status);
+        console.error("Chi tiết lỗi:", error.message);
+        console.error("Gợi ý sửa:", error.hint);
+        alert(`Lỗi kết nối: ${error.message}`);
+        return;
     }
-}
 
+    console.log("Dữ liệu nhận được:", data);
+    movies = data || [];
+    render();
+}
 function render() {
     try {
         updateStats();
