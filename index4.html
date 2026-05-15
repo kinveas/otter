@@ -170,7 +170,7 @@
         .fav-btn {
             position: absolute; top: 12px; left: 12px; width: 32px; height: 32px; border-radius: 50%;
             background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); border: none; cursor: pointer; font-size: 0.95rem;
-            display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease, background 0.2s;
+            display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease, background 0.2s; color: white;
         }
         .fav-btn:hover { transform: scale(1.2); }
         .fav-btn.active { background: rgba(255,215,0,0.4); }
@@ -405,11 +405,11 @@ async function loadMovies() {
         return;
     }
 
-    // Nếu database mới tinh (trống), thêm 2 phim mặc định để giao diện không bị trống
+    // Nếu database mới tinh (trống), thêm phim mặc định
     if (data && data.length === 0) {
         const defaultMovies = [
-            { title: 'Your Name', year: 2016, genre: 'Tình cảm', status: 'watched', fav: true,  emoji: '🌸', posterIdx: 5, review: 'Một bộ phim rất hay về sự kết nối.' },
-            { title: 'The Batman', year: 2022, genre: 'Hành động', status: 'watch', fav: false, emoji: '🌙', posterIdx: 2, review: '' },
+            { title: 'Your Name', year: 2016, genre: 'Tình cảm', status: 'watched', fav: true,  emoji: '🌸', posteridx: 5, review: 'Một bộ phim rất hay về sự kết nối.' },
+            { title: 'The Batman', year: 2022, genre: 'Hành động', status: 'watch', fav: false, emoji: '🌙', posteridx: 2, review: '' },
         ];
 
         await supabase.from('movies').insert(defaultMovies);
@@ -440,7 +440,7 @@ function render() {
 
     grid.innerHTML = list.map((m, i) => `
         <div class="movie-card" style="animation-delay:${i * 0.06}s">
-            <div class="movie-poster poster-${m.posterIdx % 8}">
+            <div class="movie-poster poster-${m.posteridx % 8}">
                 ${m.emoji}
                 <span class="status-badge ${m.status === 'watched' ? 'badge-watched' : 'badge-watch'}">
                     ${m.status === 'watched' ? '✅ Đã xem' : '🍿 Muốn xem'}
@@ -562,7 +562,7 @@ document.getElementById('modalSave').addEventListener('click', async function ()
         status: document.getElementById('inputStatus').value,
         fav: false,
         emoji: selectedEmoji,
-        posterIdx: movies.length % 8,
+        posteridx: movies.length % 8,
         review: ''
     };
 
