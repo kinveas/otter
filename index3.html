@@ -25,7 +25,6 @@
         #sakura-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .main-layout { position: relative; z-index: 1; padding: 100px 20px 60px 20px; display: flex; justify-content: center; }
 
-        /* Nút quay lại */
         .back-btn {
             position: fixed; top: 40px; left: 40px; color: #ff8fa3; text-decoration: none; font-weight: 800; font-size: 1.1rem;
             display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.75); backdrop-filter: blur(12px);
@@ -33,7 +32,6 @@
         }
         .back-btn:hover { background: #fff; transform: translateX(-5px); box-shadow: 0 6px 20px rgba(255,143,163,0.3); }
 
-        /* === WRAPPER & OVERLAY === */
         .bento-wrapper { position: relative; width: 100%; max-width: 1100px; height: 700px; overflow: hidden; transition: height 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .fade-overlay {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 350px;
@@ -48,9 +46,7 @@
         }
         .btn-expand.add-sub { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); color: #5d4037; box-shadow: 0 10px 25px rgba(161,196,253,0.4); }
         .btn-expand:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255,154,158,0.6); }
-        .btn-expand.add-sub:hover { box-shadow: 0 15px 35px rgba(161,196,253,0.6); }
 
-        /* === BENTO GRID === */
         .bento-container { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(260px, auto); gap: 24px; }
         .bento-card {
             border-radius: 36px; padding: 35px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
@@ -62,7 +58,6 @@
         @keyframes cuteBounce { 0%, 100% { transform: translateY(-8px); } 50% { transform: translateY(-12px); } }
         .bento-card:hover { animation: cuteBounce 1s ease-in-out infinite; box-shadow: 0 20px 40px rgba(255,143,163,0.3); z-index: 5; }
 
-        /* Màu Card */
         .card-major { grid-column: span 2; background: linear-gradient(135deg, #ffafbd, #ffc3a0); color: #fff; animation-delay: 0.1s; }
         .card-english { grid-column: span 1; background: linear-gradient(135deg, #fbc2eb, #a6c1ee); color: #fff; animation-delay: 0.2s; }
         .card-finance { grid-column: span 1; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); animation-delay: 0.3s; }
@@ -76,14 +71,12 @@
         .card-2030 { grid-column: span 2; background: rgba(255,255,255,0.8); }
         .card-dc { grid-column: span 2; background: #d5aaaf; color: #fff; }
 
-        /* Typography */
         .tag { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.85; margin-bottom: 10px; display: block; }
         .title { font-size: 1.8rem; font-weight: 800; line-height: 1.2; margin: 0 0 10px 0; letter-spacing: -0.5px; }
         .desc { font-size: 1rem; opacity: 0.9; margin: 0; line-height: 1.5; max-width: 90%; }
         .card-english .desc, .card-finance .desc, .card-mindset .desc, .card-grooming .desc, .card-gym .desc, .card-tools .desc { display: none; }
         .card-english .title, .card-finance .title, .card-mindset .title, .card-grooming .title, .card-gym .title, .card-tools .title { font-size: 1.5rem; }
 
-        /* Nút hành động góc dưới */
         .action-btn {
             position: absolute; bottom: 25px; right: 25px; width: 45px; height: 45px; border-radius: 50%;
             background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
@@ -94,9 +87,7 @@
         .bento-card:hover .action-btn { background: #fff; color: #ff8fa3; transform: scale(1.1); box-shadow: 0 8px 20px rgba(255,143,163,0.3); }
         .bento-card:hover .plus { transform: scale(0) rotate(90deg); opacity: 0; }
         .bento-card:hover .arrow { transform: translateX(0); opacity: 1; }
-        .del-action:hover .action-btn { background: #ff6b6b !important; color: white !important; }
 
-        /* === MODALS === */
         .modal-backdrop {
             position: fixed; inset: 0; background: rgba(255, 236, 242, 0.85); backdrop-filter: blur(10px); z-index: 500;
             display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -110,172 +101,78 @@
         .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
         .modal h2 { margin: 0 0 24px; font-size: 1.6rem; font-weight: 800; color: #ff8fa3; }
 
+        /* === PREVIEW MODAL === */
+        .preview-modal .modal { max-width: 800px; height: 85vh; display: flex; flex-direction: column; }
+        .preview-container { flex: 1; width: 100%; background: #f8f9fa; border-radius: 14px; border: 1px solid #ffdae0; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 0.85rem; font-weight: 800; color: #a88; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
         .form-input {
             width: 100%; padding: 12px 16px; background: #fff0f5; border: 1px solid #ffdae0;
-            border-radius: 14px; outline: none; color: #5d4037; font-family: inherit; font-size: 0.95rem; font-weight: 600; transition: all 0.25s;
-            box-sizing: border-box;
+            border-radius: 14px; outline: none; color: #5d4037; font-family: inherit; font-size: 0.95rem; font-weight: 600; transition: all 0.25s; box-sizing: border-box;
         }
-        .form-input:focus { border-color: #ff8fa3; background: #fff; box-shadow: 0 0 0 4px rgba(255, 143, 163, 0.15); }
 
-        /* Upload File UI — Drag & Drop Zone */
         .file-upload-box {
-            border: 2px dashed #ffdae0; border-radius: 14px; padding: 24px 20px; text-align: center;
-            background: #fffafa; cursor: pointer; transition: all 0.25s; position: relative;
-            user-select: none;
+            border: 2px dashed #ffdae0; border-radius: 14px; padding: 24px 20px; text-align: center; background: #fffafa; cursor: pointer; transition: all 0.25s; position: relative; user-select: none;
         }
-        .file-upload-box:hover, .file-upload-box.drag-over {
-            border-color: #ff8fa3; background: #fff0f5;
-            box-shadow: 0 0 0 4px rgba(255,143,163,0.12);
-        }
-        .file-upload-box.drag-over { transform: scale(1.01); }
+        .file-upload-box:hover { border-color: #ff8fa3; background: #fff0f5; box-shadow: 0 0 0 4px rgba(255,143,163,0.12); }
         .file-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-        .upload-zone-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
-        .upload-zone-text { font-size: 0.9rem; font-weight: 700; color: #c9a5b1; }
-        .upload-zone-hint { font-size: 0.78rem; color: #ddb8c4; margin-top: 4px; font-weight: 600; }
 
-        /* Queue: danh sách file đã chọn chờ upload */
         .file-queue { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .queue-item {
-            display: flex; align-items: center; gap: 10px;
-            background: #fff0f5; border: 1px solid #ffdae0; border-radius: 10px;
-            padding: 8px 12px; font-size: 0.85rem; font-weight: 700;
-        }
+        .queue-item { display: flex; align-items: center; gap: 10px; background: #fff0f5; border: 1px solid #ffdae0; border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; font-weight: 700; }
         .queue-item-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #5d4037; }
-        .queue-item-size { font-size: 0.75rem; color: #c9a5b1; white-space: nowrap; }
-        .queue-item-remove { background: none; border: none; color: #ff8fa3; cursor: pointer; font-size: 1rem; padding: 0 4px; flex-shrink: 0; }
-        .queue-item-status { font-size: 0.8rem; white-space: nowrap; }
+        .queue-item-remove { background: none; border: none; color: #ff8fa3; cursor: pointer; font-size: 1rem; padding: 0 4px; }
 
-        /* Progress bar upload — per-file */
         .upload-progress-wrap { display: none; margin-top: 10px; }
         .upload-progress-wrap.show { display: block; }
         .upload-progress-bar-bg { background: #ffdae0; border-radius: 10px; height: 8px; overflow: hidden; }
         .upload-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #ff9a9e, #fecfef); border-radius: 10px; transition: width 0.25s ease; }
         .upload-status-text { font-size: 0.8rem; color: #ff8fa3; font-weight: 700; margin-top: 6px; text-align: center; }
 
-        /* File List trong Modal Chi Tiết */
         .file-list { margin-top: 15px; max-height: 250px; overflow-y: auto; padding-right: 5px; }
-        .file-item {
-            display: flex; align-items: center; justify-content: space-between;
-            background: #fff0f5; padding: 12px 15px; border-radius: 12px; margin-bottom: 10px;
-            font-size: 0.9rem; font-weight: 700; border: 1px solid #ffdae0;
-            transition: background 0.2s;
+        .file-item, .folder-item {
+            display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; font-size: 0.9rem; font-weight: 700; border: 1px solid #ffdae0; transition: background 0.2s;
         }
-        .file-item:hover { background: #ffe4ec; }
-        .file-item-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
-        .file-item-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #5d4037; max-width: 220px; }
-        .file-item a { color: #5d4037; text-decoration: none; display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
-        .file-item a:hover { color: #ff8fa3; }
-        .file-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .file-download-btn, .del-file-btn {
-            background: none; border: none; cursor: pointer; font-size: 1rem; padding: 4px 8px;
-            border-radius: 8px; transition: background 0.2s;
-        }
-        .file-download-btn { color: #26d0ce; }
-        .file-download-btn:hover { background: rgba(38,208,206,0.12); }
-        .folder-download-btn { background: none; border: none; color: #74b9ff; cursor: pointer; font-size: 1rem; padding: 3px 7px; border-radius: 7px; transition: all 0.2s; }
-        .folder-download-btn:hover { background: rgba(116,185,255,0.12); color: #0984e3; }
-        .del-file-btn { color: #ff6b6b; }
-        .del-file-btn:hover { background: rgba(255,107,107,0.12); }
+        .file-item { background: #fff0f5; } .file-item:hover { background: #ffe4ec; }
+        .folder-item { background: linear-gradient(135deg,rgba(255,240,245,0.9),rgba(255,228,236,0.7)); cursor: pointer; }
+        .folder-item:hover { background: linear-gradient(135deg,#fff0f5,#ffe4ec); border-color: #ff8fa3; transform: translateX(3px); }
+        .file-item-left, .folder-item-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; color: #5d4037; }
+        .file-item-name, .folder-item-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
 
-        /* File size badge */
-        .file-size { font-size: 0.75rem; color: #c9a5b1; font-weight: 600; white-space: nowrap; }
+        .file-item-actions, .folder-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        .file-preview-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 4px 8px; border-radius: 8px; color: #f39c12; }
+        .file-preview-btn:hover { background: rgba(243,156,18,0.12); }
+        .file-download-btn, .folder-download-btn, .del-file-btn, .folder-del-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 4px 8px; border-radius: 8px; transition: background 0.2s; }
+        .file-download-btn { color: #26d0ce; } .file-download-btn:hover { background: rgba(38,208,206,0.12); }
+        .folder-download-btn { color: #74b9ff; } .folder-download-btn:hover { background: rgba(116,185,255,0.12); }
+        .del-file-btn, .folder-del-btn { color: #ff6b6b; } .del-file-btn:hover, .folder-del-btn:hover { background: rgba(255,107,107,0.12); }
 
-        /* Spinner loading */
         .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,143,163,0.3); border-top-color: #ff8fa3; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Toast thông báo */
-        .toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
-            background: #fff; border: 2px solid #ffdae0; border-radius: 20px; padding: 14px 24px;
-            font-weight: 800; color: #5d4037; box-shadow: 0 10px 30px rgba(255,143,163,0.25);
-            z-index: 9999; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
-            opacity: 0; white-space: nowrap;
-        }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: #fff; border: 2px solid #ffdae0; border-radius: 20px; padding: 14px 24px; font-weight: 800; color: #5d4037; box-shadow: 0 10px 30px rgba(255,143,163,0.25); z-index: 9999; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s; opacity: 0; white-space: nowrap; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast.success { border-color: #84fab0; }
-        .toast.error { border-color: #ff9a9e; color: #c0392b; }
+        .toast.success { border-color: #84fab0; } .toast.error { border-color: #ff9a9e; color: #c0392b; }
 
-        /* Empty state */
         .empty-state { text-align: center; padding: 30px 20px; opacity: 0.65; font-size: 0.95rem; line-height: 1.7; }
+        .breadcrumb { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; font-size: 0.82rem; font-weight: 800; margin-bottom: 10px; color: #c9a5b1; }
+        .breadcrumb-item { cursor: pointer; color: #ff8fa3; background: none; border: none; font-family: inherit; font-size: inherit; font-weight: inherit; padding: 2px 4px; border-radius: 6px; }
+        .breadcrumb-item:hover { background: #fff0f5; } .breadcrumb-item.active { color: #5d4037; cursor: default; } .breadcrumb-sep { color: #e8c4cc; font-size: 0.75rem; }
 
-        /* === BREADCRUMB === */
-        .breadcrumb {
-            display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
-            font-size: 0.82rem; font-weight: 800; margin-bottom: 10px;
-            color: #c9a5b1;
-        }
-        .breadcrumb-item {
-            cursor: pointer; color: #ff8fa3; transition: opacity 0.2s;
-            background: none; border: none; font-family: inherit; font-size: inherit; font-weight: inherit; padding: 2px 4px; border-radius: 6px;
-        }
-        .breadcrumb-item:hover { background: #fff0f5; }
-        .breadcrumb-item.active { color: #5d4037; cursor: default; }
-        .breadcrumb-item.active:hover { background: none; }
-        .breadcrumb-sep { color: #e8c4cc; font-size: 0.75rem; }
-
-        /* === TOOLBAR === */
-        .file-toolbar {
-            display: flex; gap: 8px; margin-bottom: 10px; align-items: center;
-        }
-        .toolbar-btn {
-            padding: 7px 14px; border-radius: 20px; border: 1.5px solid #ffdae0;
-            background: #fff; color: #ff8fa3; font-family: inherit; font-size: 0.82rem;
-            font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px;
-            transition: all 0.2s; white-space: nowrap;
-        }
+        .file-toolbar { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+        .toolbar-btn { padding: 7px 14px; border-radius: 20px; border: 1.5px solid #ffdae0; background: #fff; color: #ff8fa3; font-family: inherit; font-size: 0.82rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s; white-space: nowrap; }
         .toolbar-btn:hover { background: #fff0f5; border-color: #ff8fa3; }
 
-        /* === FOLDER ITEM === */
-        .folder-item {
-            display: flex; align-items: center; justify-content: space-between;
-            background: linear-gradient(135deg,rgba(255,240,245,0.9),rgba(255,228,236,0.7));
-            padding: 11px 15px; border-radius: 12px; margin-bottom: 8px;
-            font-size: 0.9rem; font-weight: 700; border: 1.5px solid #ffdae0;
-            cursor: pointer; transition: all 0.2s;
-        }
-        .folder-item:hover { background: linear-gradient(135deg,#fff0f5,#ffe4ec); border-color: #ff8fa3; transform: translateX(3px); }
-        .folder-item-left { display: flex; align-items: center; gap: 8px; color: #e07090; }
-        .folder-item-name { color: #5d4037; font-weight: 800; }
-        .folder-item-actions { display: flex; gap: 4px; }
-        .folder-del-btn { background: none; border: none; color: #ffb3c1; cursor: pointer; font-size: 1rem; padding: 3px 7px; border-radius: 7px; transition: all 0.2s; }
-        .folder-del-btn:hover { background: rgba(255,107,107,0.12); color: #ff6b6b; }
-
-        /* Inline tạo thư mục mới */
-        .new-folder-row {
-            display: flex; gap: 8px; align-items: center; margin-bottom: 10px;
-            background: #fff0f5; border: 1.5px dashed #ff8fa3; border-radius: 12px; padding: 8px 12px;
-        }
-        .new-folder-input {
-            flex: 1; background: transparent; border: none; outline: none;
-            font-family: inherit; font-size: 0.9rem; font-weight: 700; color: #5d4037;
-        }
-        .new-folder-input::placeholder { color: #e8c4cc; }
-        .new-folder-confirm { background: #ff8fa3; color: #fff; border: none; border-radius: 8px; padding: 5px 12px; font-family: inherit; font-weight: 800; cursor: pointer; font-size: 0.85rem; }
-        .new-folder-confirm:hover { background: #ff6fa0; }
+        .new-folder-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; background: #fff0f5; border: 1.5px dashed #ff8fa3; border-radius: 12px; padding: 8px 12px; }
+        .new-folder-input { flex: 1; background: transparent; border: none; outline: none; font-family: inherit; font-size: 0.9rem; font-weight: 700; color: #5d4037; }
+        .new-folder-confirm { background: #ff8fa3; color: #fff; border: none; border-radius: 8px; padding: 5px 12px; font-family: inherit; font-weight: 800; cursor: pointer; }
         .new-folder-cancel { background: none; border: none; color: #e8c4cc; cursor: pointer; font-size: 1.1rem; }
 
-        /* Modal actions */
         .modal-actions { display: flex; gap: 10px; margin-top: 24px; }
-        .modal-btn {
-            flex: 1; padding: 12px; border-radius: 14px; font-family: inherit; font-size: 0.95rem; font-weight: 800; cursor: pointer; border: none; transition: all 0.2s;
-        }
-        .btn-cancel { background: #ffe4e1; color: #a88; }
-        .btn-cancel:hover { background: #ffdae0; }
-        .btn-submit { background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #fff; box-shadow: 0 6px 15px rgba(255, 143, 163, 0.3); }
-        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 143, 163, 0.4); }
-        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-        /* Custom Scrollbar */
+        .modal-btn { flex: 1; padding: 12px; border-radius: 14px; font-family: inherit; font-size: 0.95rem; font-weight: 800; cursor: pointer; border: none; transition: all 0.2s; }
+        .btn-cancel { background: #ffe4e1; color: #a88; } .btn-submit { background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #fff; box-shadow: 0 6px 15px rgba(255, 143, 163, 0.3); }
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(255, 143, 163, 0.3); border-radius: 3px; }
-
-        @media (max-width: 900px) {
-            .bento-container { grid-template-columns: 1fr; grid-auto-rows: minmax(200px, auto); }
-            .bento-card { grid-column: span 1 !important; grid-row: span 1 !important; }
-            .bento-wrapper { height: 1000px; }
-        }
+        @media (max-width: 900px) { .bento-container { grid-template-columns: 1fr; } .bento-card { grid-column: span 1 !important; grid-row: span 1 !important; } .bento-wrapper { height: 1000px; } }
     </style>
 </head>
 <body>
@@ -285,9 +182,7 @@
 
 <div class="main-layout">
     <div class="bento-wrapper" id="bentoWrapper">
-        <div class="bento-container" id="mainGrid">
-            </div>
-
+        <div class="bento-container" id="mainGrid"></div>
         <div class="fade-overlay" id="fadeOverlay">
             <button class="btn-expand" id="btnExpand">Mở rộng không gian 🌸</button>
             <button class="btn-expand add-sub" id="btnAddSubject">+ Thêm Môn 📚</button>
@@ -298,73 +193,54 @@
 <div class="modal-backdrop" id="modalAddSubject">
     <div class="modal">
         <h2>✨ Thêm Không Gian Mới</h2>
-        <div class="form-group">
-            <label class="form-label">Tên Môn / Chủ đề</label>
-            <input class="form-input" id="inputSubTitle" type="text" placeholder="VD: Lịch sử Đảng">
-        </div>
-        <div class="form-group">
-            <label class="form-label">Phân loại (Tag)</label>
-            <input class="form-input" id="inputSubTag" type="text" placeholder="VD: Đại cương">
-        </div>
-        <div class="modal-actions">
-            <button class="modal-btn btn-cancel" onclick="closeModals()">Hủy</button>
-            <button class="modal-btn btn-submit" id="btnSaveSubject" onclick="saveNewSubject()">Tạo mới 🌸</button>
-        </div>
+        <div class="form-group"><label class="form-label">Tên Môn / Chủ đề</label><input class="form-input" id="inputSubTitle" type="text" placeholder="VD: Lịch sử Đảng"></div>
+        <div class="form-group"><label class="form-label">Phân loại (Tag)</label><input class="form-input" id="inputSubTag" type="text" placeholder="VD: Đại cương"></div>
+        <div class="modal-actions"><button class="modal-btn btn-cancel" onclick="closeModals()">Hủy</button><button class="modal-btn btn-submit" id="btnSaveSubject" onclick="saveNewSubject()">Tạo mới 🌸</button></div>
     </div>
 </div>
 
 <div class="modal-backdrop" id="modalSubjectDetail">
     <div class="modal" style="max-width:520px;">
         <h2 id="detailTitle">Tên Môn Học</h2>
-
         <div class="breadcrumb" id="breadcrumb"></div>
-
         <div class="file-toolbar">
             <button class="toolbar-btn" onclick="toggleNewFolderRow()">📁 Tạo thư mục</button>
             <button class="toolbar-btn" onclick="toggleUploadPanel()">⬆️ Tải file lên</button>
         </div>
-
         <div class="new-folder-row" id="newFolderRow" style="display:none;">
-            <span>📁</span>
-            <input class="new-folder-input" id="newFolderInput" type="text" placeholder="Tên thư mục mới..." maxlength="60">
-            <button class="new-folder-confirm" onclick="createFolder()">Tạo</button>
-            <button class="new-folder-cancel" onclick="toggleNewFolderRow()">×</button>
+            <span>📁</span><input class="new-folder-input" id="newFolderInput" type="text" placeholder="Tên thư mục mới..." maxlength="60">
+            <button class="new-folder-confirm" onclick="createFolder()">Tạo</button><button class="new-folder-cancel" onclick="toggleNewFolderRow()">×</button>
         </div>
-
         <div id="uploadPanel" style="display:none; margin-bottom:12px;">
             <div class="file-upload-box" id="dropZoneMore">
                 <input type="file" id="inputUploadMoreFile" multiple>
-                <span class="upload-zone-icon">☁️</span>
-                <span class="upload-zone-text">Kéo thả hoặc nhấn để chọn file</span>
-                <span class="upload-zone-hint">Mọi loại file • Chọn nhiều cùng lúc</span>
+                <div style="font-size:2rem; margin-bottom:6px;">☁️</div>
+                <div style="font-weight:700; color:#c9a5b1; font-size:0.9rem;">Kéo thả hoặc nhấn để chọn file</div>
             </div>
             <div class="file-queue" id="queueMore"></div>
             <div class="upload-progress-wrap" id="moreFileProgress">
                 <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="moreFileBar"></div></div>
                 <div class="upload-status-text" id="moreFileStatus"></div>
             </div>
-            <button class="modal-btn btn-submit" id="btnUploadMore" onclick="uploadMoreFile()" style="margin-top: 8px; width: 100%;">
-                ☁️ Tải lên
-            </button>
+            <button class="modal-btn btn-submit" id="btnUploadMore" onclick="uploadMoreFile()" style="margin-top: 8px; width: 100%;">☁️ Tải lên</button>
         </div>
-
         <div class="form-label" id="fileListLabel">Nội dung thư mục</div>
-        <div class="file-list" id="detailFileList" style="max-height:280px;">
-            <div class="empty-state">Đang tải... 🦦</div>
-        </div>
+        <div class="file-list" id="detailFileList" style="max-height:280px;"><div class="empty-state">Đang tải... 🦦</div></div>
+        <div class="modal-actions"><button class="modal-btn btn-cancel" onclick="closeModals()">Đóng</button></div>
+    </div>
+</div>
 
-        <div class="modal-actions">
-            <button class="modal-btn btn-cancel" onclick="closeModals()">Đóng</button>
-        </div>
+<div class="modal-backdrop preview-modal" id="modalPreview">
+    <div class="modal">
+        <h2 id="previewTitle" style="font-size: 1.3rem; margin-bottom: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tên File</h2>
+        <div class="preview-container" id="previewContent"></div>
+        <div class="modal-actions" style="margin-top: 0;"><button class="modal-btn btn-cancel" onclick="closePreviewModal()">Đóng</button></div>
     </div>
 </div>
 
 <div class="toast" id="toastMsg"></div>
 
 <script>
-/* ================================================================
-   HÀM XỬ LÝ CHUỖI CHO SUPABASE (XÓA DẤU TIẾNG VIỆT ĐỂ LÀM KEY)
-   ================================================================ */
 function sanitizeForSupabase(str) {
     if (!str) return "";
     str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -374,45 +250,28 @@ function sanitizeForSupabase(str) {
     return str;
 }
 
-/* ================================================================
-   ⚙️  CẤU HÌNH SUPABASE
-   ================================================================ */
 const SUPABASE_URL  = 'https://kmouggtquexofrrsvtmk.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttb3VnZ3RxdWV4b2ZycnN2dG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTAzOTAsImV4cCI6MjA5NDQyNjM5MH0.ACKaXz68CkGGnQW8A4UUVAov9oBBxBVgHe_ac3Tb-yU';
 const BUCKET_NAME   = 'documents';
+const { createClient } = supabase; const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/* ================================================================
-   HOA ANH ĐÀO RƠI (Giữ nguyên)
-   ================================================================ */
 (function () {
-    const canvas = document.getElementById('sakura-canvas');
-    const ctx = canvas.getContext('2d');
-    const FALL_SPEED = 50; const PETAL_COUNT = 38;
-    const COLORS = ['rgba(255,182,193,0.85)', 'rgba(255,160,180,0.80)', 'rgba(255,200,210,0.75)', 'rgba(252,220,230,0.70)', 'rgba(255,145,175,0.80)', 'rgba(248,200,215,0.65)'];
+    const canvas = document.getElementById('sakura-canvas'); const ctx = canvas.getContext('2d');
     let W, H, petals = [];
     function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    function createPetal(startY) { return { x: Math.random() * W, y: startY !== undefined ? startY : Math.random() * -H, rx: 7 + Math.random() * 7, ry: 4 + Math.random() * 4, rot: Math.random() * Math.PI * 2, vy: FALL_SPEED * (0.85 + Math.random() * 0.3), swingAmp: 18 + Math.random() * 22, swingFreq: 0.4 + Math.random() * 0.5, swingOff: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 1.2, color: COLORS[Math.floor(Math.random() * COLORS.length)], t: Math.random() * 10 }; }
-    function init() { resize(); petals = []; for (let i = 0; i < PETAL_COUNT; i++) petals.push(createPetal(Math.random() * H)); }
+    function createPetal(startY) { return { x: Math.random() * W, y: startY !== undefined ? startY : Math.random() * -H, rx: 7 + Math.random() * 7, ry: 4 + Math.random() * 4, rot: Math.random() * Math.PI * 2, vy: 50 * (0.85 + Math.random() * 0.3), swingAmp: 18 + Math.random() * 22, swingFreq: 0.4 + Math.random() * 0.5, swingOff: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 1.2, color: ['rgba(255,182,193,0.85)', 'rgba(255,160,180,0.80)', 'rgba(255,200,210,0.75)'][Math.floor(Math.random() * 3)], t: Math.random() * 10 }; }
+    function init() { resize(); petals = []; for (let i = 0; i < 38; i++) petals.push(createPetal(Math.random() * H)); }
     let last = null;
     function draw(ts) {
-        if (!last) last = ts; const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
-        ctx.clearRect(0, 0, W, H);
-        petals.forEach(p => {
-            p.t += dt; p.y += p.vy * dt; p.rot += p.rotSpeed * dt;
-            const swing = Math.sin(p.t * p.swingFreq * Math.PI * 2 + p.swingOff) * p.swingAmp; const drawX = p.x + swing;
+        if (!last) last = ts; const dt = Math.min((ts - last) / 1000, 0.05); last = ts; ctx.clearRect(0, 0, W, H);
+        petals.forEach(p => { p.t += dt; p.y += p.vy * dt; p.rot += p.rotSpeed * dt; const drawX = p.x + Math.sin(p.t * p.swingFreq * Math.PI * 2 + p.swingOff) * p.swingAmp;
             if (p.y - p.ry > H) { Object.assign(p, createPetal(-20)); p.t = 0; return; }
-            ctx.save(); ctx.translate(drawX, p.y); ctx.rotate(p.rot); ctx.beginPath(); ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill(); ctx.strokeStyle = 'rgba(220,130,150,0.25)'; ctx.lineWidth = 0.5; ctx.stroke(); ctx.restore();
+            ctx.save(); ctx.translate(drawX, p.y); ctx.rotate(p.rot); ctx.beginPath(); ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill(); ctx.restore();
         }); requestAnimationFrame(draw);
     }
     window.addEventListener('resize', resize); init(); requestAnimationFrame(draw);
 })();
 
-/* ================================================================
-   GIAO DIỆN MÔN HỌC (MIX FIX & DYNAMIC)
-   ================================================================ */
 const fixedSubjects = [
     { title: 'Luật Doanh nghiệp', tag: '🏢 Chuyên ngành', class: 'card-major', desc: 'Nền tảng pháp lý vững chắc cho thương trường.' },
     { title: 'Luật Thương mại', tag: '⚖️ Thương mại', class: 'card-english' },
@@ -427,429 +286,187 @@ const fixedSubjects = [
     { title: 'Thương mại QT', tag: '🚢 Giao thương', class: 'card-2030', desc: 'Pháp lý trong bối cảnh hội nhập kinh tế.', hidden: true },
     { title: 'Bảo hiểm QT', tag: '🛡️ Bảo hiểm', class: 'card-dc', desc: 'Giảm thiểu rủi ro trong giao thương quốc tế.', hidden: true }
 ];
-
 let dynamicSubjects = JSON.parse(localStorage.getItem('hinhnhan_subjects') || '[]');
 
 function renderAllSubjects() {
-    const mainGrid = document.getElementById('mainGrid');
-    mainGrid.innerHTML = '';
+    const mainGrid = document.getElementById('mainGrid'); mainGrid.innerHTML = '';
     const isExpanded = document.getElementById('fadeOverlay').classList.contains('hidden');
-
-    // 1. Render Fixed
     fixedSubjects.forEach((sub, i) => {
         let visibilityClass = sub.hidden ? (isExpanded ? 'entrance-anim' : 'hidden-card') : 'entrance-anim';
-        let html = '';
-        if (sub.isSpecial) {
-            html = `<div style="display: flex; flex-direction: column; height: 100%;">
-                    <span class="tag">${sub.tag}</span><h2 class="title">${sub.title}</h2><p class="desc">Kim chỉ nam tư tưởng và hành động.</p>
-                    <img src="assets/15.webp" alt="Tư tưởng HCM" style="width: 100%; flex: 1; min-height: 0; object-fit: cover; border-radius: 20px; margin-top: 20px; margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.4);">
-                </div>`;
-        } else {
-            html = `<div><span class="tag">${sub.tag}</span><h2 class="title">${sub.title}</h2>${sub.desc ? `<p class="desc">${sub.desc}</p>` : ''}</div>`;
-        }
-
-        const card = document.createElement('div');
-        card.className = `bento-card ${sub.class} ${visibilityClass}`;
-        card.style.animationDelay = `${i * 0.1}s`;
-        card.onclick = () => openSubjectDetail(sub.title);
-        card.innerHTML = `${html}<div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>`;
-        mainGrid.appendChild(card);
+        let html = sub.isSpecial ? `<div style="display: flex; flex-direction: column; height: 100%;"><span class="tag">${sub.tag}</span><h2 class="title">${sub.title}</h2><p class="desc">Kim chỉ nam tư tưởng và hành động.</p><img src="assets/15.webp" style="width: 100%; flex: 1; min-height: 0; object-fit: cover; border-radius: 20px; margin-top: 20px; margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.4);"></div>` : `<div><span class="tag">${sub.tag}</span><h2 class="title">${sub.title}</h2>${sub.desc ? `<p class="desc">${sub.desc}</p>` : ''}</div>`;
+        const card = document.createElement('div'); card.className = `bento-card ${sub.class} ${visibilityClass}`; card.style.animationDelay = `${i * 0.1}s`; card.onclick = () => openSubjectDetail(sub.title);
+        card.innerHTML = `${html}<div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>`; mainGrid.appendChild(card);
     });
-
-    // 2. Render Dynamic
     dynamicSubjects.forEach((sub) => {
-        const card = document.createElement('div');
-        card.className = `bento-card del-action dynamic-card ${isExpanded ? 'entrance-anim' : 'hidden-card'}`;
-        card.style.background = 'linear-gradient(135deg, #e0c3fc, #8ec5fc)';
-        card.style.color = '#fff'; card.style.gridColumn = 'span 1';
-        card.onclick = () => openSubjectDetail(sub.title);
-        card.innerHTML = `
-            <div><span class="tag">📖 ${sub.tag}</span><h2 class="title" style="font-size:1.5rem;">${sub.title}</h2></div>
-            <div class="action-btn" onclick="deleteSubject(${sub.id}, event)"><span class="plus">🗑️</span><span class="arrow">Xóa</span></div>
-        `;
-        mainGrid.appendChild(card);
+        const card = document.createElement('div'); card.className = `bento-card del-action dynamic-card ${isExpanded ? 'entrance-anim' : 'hidden-card'}`; card.style.background = 'linear-gradient(135deg, #e0c3fc, #8ec5fc)'; card.style.color = '#fff'; card.style.gridColumn = 'span 1'; card.onclick = () => openSubjectDetail(sub.title);
+        card.innerHTML = `<div><span class="tag">📖 ${sub.tag}</span><h2 class="title" style="font-size:1.5rem;">${sub.title}</h2></div><div class="action-btn" onclick="deleteSubject(${sub.id}, event)"><span class="plus">🗑️</span><span class="arrow">Xóa</span></div>`; mainGrid.appendChild(card);
     });
-
     if (isExpanded) { document.getElementById('bentoWrapper').style.height = 'auto'; }
 }
-
 document.addEventListener('animationend', function (e) { if (e.animationName === 'slideUpFade') { e.target.classList.remove('entrance-anim'); e.target.style.animationDelay = '0s'; } });
 document.getElementById('btnExpand').addEventListener('click', function () {
-    const wrapper = document.getElementById('bentoWrapper');
-    const overlay = document.getElementById('fadeOverlay');
-    overlay.classList.add('hidden');
-    renderAllSubjects(); // Re-render to show hidden cards
+    const wrapper = document.getElementById('bentoWrapper'); document.getElementById('fadeOverlay').classList.add('hidden'); renderAllSubjects();
     setTimeout(() => { wrapper.style.height = wrapper.scrollHeight + 'px'; setTimeout(() => { wrapper.style.height = 'auto'; }, 900); }, 50);
 });
 
-/* ================================================================
-   TIỆN ÍCH
-   ================================================================ */
-function showToast(msg, type = '') {
-    const t = document.getElementById('toastMsg'); t.textContent = msg; t.className = `toast ${type} show`;
-    setTimeout(() => { t.className = 'toast'; }, 3000);
-}
-function formatBytes(bytes) {
-    if (!bytes) return '';
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-}
-function getFileIcon(name) {
-    const ext = name.split('.').pop().toLowerCase();
-    const icons = { pdf: '📄', doc: '📝', docx: '📝', xls: '📊', xlsx: '📊', ppt: '📑', pptx: '📑', jpg: '🖼️', jpeg: '🖼️', png: '🖼️', zip: '🗜️', rar: '🗜️' };
-    return icons[ext] || '📄';
-}
+function showToast(msg, type = '') { const t = document.getElementById('toastMsg'); t.textContent = msg; t.className = `toast ${type} show`; setTimeout(() => { t.className = 'toast'; }, 3000); }
+function formatBytes(bytes) { if (!bytes) return ''; if (bytes < 1024) return bytes + ' B'; if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'; return (bytes / (1024 * 1024)).toFixed(1) + ' MB'; }
+function getFileIcon(name) { const ext = name.split('.').pop().toLowerCase(); const icons = { pdf: '📄', doc: '📝', docx: '📝', xls: '📊', xlsx: '📊', ppt: '📑', pptx: '📑', jpg: '🖼️', jpeg: '🖼️', png: '🖼️', mp4: '🎬', mp3: '🎵', zip: '🗜️', rar: '🗜️' }; return icons[ext] || '📄'; }
 
-/* ================================================================
-   QUEUE UPLOAD
-   ================================================================ */
 let queueMore = [];
 function renderQueue() {
-    const el = document.getElementById('queueMore');
-    if (queueMore.length === 0) { el.innerHTML = ''; return; }
-    el.innerHTML = queueMore.map((f, i) => `
-        <div class="queue-item">
-            <span>${getFileIcon(f.name)}</span><span class="queue-item-name" title="${f.name}">${f.name}</span>
-            <span class="queue-item-size">${formatBytes(f.size)}</span><span class="queue-item-status" id="qstatus-${i}">⏳</span>
-            <button class="queue-item-remove" onclick="removeFromQueue(${i})">×</button>
-        </div>
-    `).join('');
+    const el = document.getElementById('queueMore'); if (queueMore.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = queueMore.map((f, i) => `<div class="queue-item"><span>${getFileIcon(f.name)}</span><span class="queue-item-name">${f.name}</span><button class="queue-item-remove" onclick="removeFromQueue(${i})">×</button></div>`).join('');
 }
 window.removeFromQueue = function(idx) { queueMore.splice(idx, 1); renderQueue(); };
-document.getElementById('inputUploadMoreFile').addEventListener('change', function() {
-    Array.from(this.files).forEach(f => queueMore.push(f)); renderQueue(); this.value = '';
-});
+document.getElementById('inputUploadMoreFile').addEventListener('change', function() { Array.from(this.files).forEach(f => queueMore.push(f)); renderQueue(); this.value = ''; });
 const zoneMore = document.getElementById('dropZoneMore');
-zoneMore.addEventListener('dragover', e => { e.preventDefault(); zoneMore.classList.add('drag-over'); });
-zoneMore.addEventListener('dragleave', () => zoneMore.classList.remove('drag-over'));
-zoneMore.addEventListener('drop', e => { e.preventDefault(); zoneMore.classList.remove('drag-over'); Array.from(e.dataTransfer.files).forEach(f => queueMore.push(f)); renderQueue(); });
+zoneMore.addEventListener('dragover', e => { e.preventDefault(); zoneMore.classList.add('drag-over'); }); zoneMore.addEventListener('dragleave', () => zoneMore.classList.remove('drag-over')); zoneMore.addEventListener('drop', e => { e.preventDefault(); zoneMore.classList.remove('drag-over'); Array.from(e.dataTransfer.files).forEach(f => queueMore.push(f)); renderQueue(); });
 
-/* ================================================================
-   STATE BREADCRUMB (Điều hướng Thư mục theo Database)
-   ================================================================ */
-let currentViewingSubject = '';
-// folderStack lưu mảng các object: { id: UUID hoặc null (gốc), name: Tên hiển thị }
-let folderStack = [];
-
-function getCurrentFolderId() {
-    return folderStack[folderStack.length - 1].id;
-}
+let currentViewingSubject = ''; let folderStack = [];
+function getCurrentFolderId() { return folderStack[folderStack.length - 1].id; }
 
 window.openSubjectDetail = async function (title) {
-    currentViewingSubject = title;
-    folderStack = [{ id: null, name: title }]; // Bắt đầu ở thư mục gốc của Môn học
-    document.getElementById('detailTitle').textContent = `📂 ${title}`;
-    document.getElementById('modalSubjectDetail').classList.add('open');
-    document.getElementById('uploadPanel').style.display = 'none';
-    document.getElementById('newFolderRow').style.display = 'none';
+    currentViewingSubject = title; folderStack = [{ id: null, name: title }];
+    document.getElementById('detailTitle').textContent = `📂 ${title}`; document.getElementById('modalSubjectDetail').classList.add('open');
+    document.getElementById('uploadPanel').style.display = 'none'; document.getElementById('newFolderRow').style.display = 'none';
     await renderFileManager();
 };
 
 function renderBreadcrumb() {
-    const bc = document.getElementById('breadcrumb');
-    const segments = folderStack.map((seg, i) => {
-        const isLast = i === folderStack.length - 1;
-        if (isLast) return `<span class="breadcrumb-item active">📂 ${seg.name}</span>`;
+    document.getElementById('breadcrumb').innerHTML = folderStack.map((seg, i) => {
+        if (i === folderStack.length - 1) return `<span class="breadcrumb-item active">📂 ${seg.name}</span>`;
         return `<button class="breadcrumb-item" onclick="navigateTo(${i})">📂 ${seg.name}</button><span class="breadcrumb-sep">›</span>`;
-    });
-    bc.innerHTML = segments.join('');
+    }).join('');
 }
+window.navigateTo = async function(idx) { folderStack = folderStack.slice(0, idx + 1); await renderFileManager(); };
 
-window.navigateTo = async function(idx) {
-    folderStack = folderStack.slice(0, idx + 1);
-    await renderFileManager();
-};
-
-/* ================================================================
-   RENDER FILE MANAGER (Từ Database)
-   ================================================================ */
 async function renderFileManager() {
-    renderBreadcrumb();
-    const listDiv = document.getElementById('detailFileList');
-    listDiv.innerHTML = `<div class="empty-state"><span class="spinner"></span> Đang tải dữ liệu...</div>`;
-
+    renderBreadcrumb(); const listDiv = document.getElementById('detailFileList'); listDiv.innerHTML = `<div class="empty-state"><span class="spinner"></span> Đang tải dữ liệu...</div>`;
     const parentId = getCurrentFolderId();
-
-    // Lấy dữ liệu từ Database thay vì Storage
     let query = sb.from('file_manager').select('*').eq('subject_name', currentViewingSubject);
-
-    if (parentId === null) {
-        query = query.is('parent_id', null);
-    } else {
-        query = query.eq('parent_id', parentId);
-    }
+    if (parentId === null) query = query.is('parent_id', null); else query = query.eq('parent_id', parentId);
 
     const { data, error } = await query.order('is_folder', { ascending: false }).order('name', { ascending: true });
-
     if (error) { listDiv.innerHTML = `<div class="empty-state">❌ Lỗi: ${error.message}</div>`; return; }
+    if (!data || data.length === 0) { listDiv.innerHTML = `<div class="empty-state">Thư mục trống.<br>Tạo thư mục hoặc tải file lên nhé! 🦦</div>`; return; }
 
-    if (!data || data.length === 0) {
-        listDiv.innerHTML = `<div class="empty-state">Thư mục trống.<br>Tạo thư mục hoặc tải file lên nhé! 🦦</div>`; return;
-    }
-
-    let html = '';
-    data.forEach(item => {
+    listDiv.innerHTML = data.map(item => {
         if (item.is_folder) {
-            html += `
-            <div class="folder-item" onclick="enterFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}')">
-                <div class="folder-item-left"><span>📁</span><span class="folder-item-name">${item.name}</span></div>
-                <div class="folder-item-actions" onclick="event.stopPropagation()">
-                    <button class="folder-download-btn" onclick="downloadFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}', event)" title="Tải toàn bộ thư mục (ZIP)">📥 Zip</button>
-                    <button class="folder-del-btn" onclick="deleteFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}', event)" title="Xóa thư mục">🗑️</button>
-                </div>
-            </div>`;
+            return `<div class="folder-item" onclick="enterFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}')"><div class="folder-item-left"><span>📁</span><span class="folder-item-name">${item.name}</span></div><div class="folder-item-actions" onclick="event.stopPropagation()"><button class="folder-download-btn" onclick="downloadFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}', event)" title="Tải toàn bộ thư mục (ZIP)">📥 Zip</button><button class="folder-del-btn" onclick="deleteFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}', event)" title="Xóa thư mục">🗑️</button></div></div>`;
         } else {
             const size = formatBytes(item.file_size);
-            html += `
-            <div class="file-item">
-                <div class="file-item-left"><span>${getFileIcon(item.name)}</span><span class="file-item-name" title="${item.name}">${item.name}</span>${size ? `<span class="file-size">${size}</span>` : ''}</div>
-                <div class="file-item-actions">
-                    <button class="file-download-btn" onclick="downloadFile('${item.storage_path}','${item.name.replace(/'/g,"\\'")}')" title="Tải xuống">⬇️</button>
-                    <button class="del-file-btn" onclick="deleteFileItem('${item.id}', '${item.storage_path}')" title="Xóa">×</button>
-                </div>
-            </div>`;
+            return `<div class="file-item"><div class="file-item-left"><span>${getFileIcon(item.name)}</span><span class="file-item-name" title="${item.name}">${item.name}</span>${size ? `<span class="file-size">${size}</span>` : ''}</div><div class="file-item-actions"><button class="file-preview-btn" onclick="previewFile('${item.storage_path}','${item.name.replace(/'/g,"\\'")}')" title="Xem trước">👁️</button><button class="file-download-btn" onclick="downloadFile('${item.storage_path}','${item.name.replace(/'/g,"\\'")}')" title="Tải xuống">⬇️</button><button class="del-file-btn" onclick="deleteFileItem('${item.id}', '${item.storage_path}')" title="Xóa">×</button></div></div>`;
         }
-    });
-    listDiv.innerHTML = html;
+    }).join('');
 }
+window.enterFolder = async function(id, name) { folderStack.push({ id, name }); document.getElementById('uploadPanel').style.display = 'none'; document.getElementById('newFolderRow').style.display = 'none'; await renderFileManager(); };
 
-window.enterFolder = async function(id, name) {
-    folderStack.push({ id, name });
-    document.getElementById('uploadPanel').style.display = 'none';
-    document.getElementById('newFolderRow').style.display = 'none';
-    await renderFileManager();
-};
-
-/* ================================================================
-   TẠO THƯ MỤC (Lưu vào DB với tiếng Việt)
-   ================================================================ */
-window.toggleNewFolderRow = function() {
-    const row = document.getElementById('newFolderRow');
-    const isHidden = row.style.display === 'none';
-    row.style.display = isHidden ? 'flex' : 'none';
-    if (isHidden) { document.getElementById('newFolderInput').focus(); document.getElementById('uploadPanel').style.display = 'none'; }
-};
-
+window.toggleNewFolderRow = function() { const row = document.getElementById('newFolderRow'); row.style.display = row.style.display === 'none' ? 'flex' : 'none'; if(row.style.display==='flex') { document.getElementById('newFolderInput').focus(); document.getElementById('uploadPanel').style.display='none'; } };
 window.createFolder = async function() {
-    const input = document.getElementById('newFolderInput');
-    const name  = input.value.trim();
-    if (!name) { showToast('Nhập tên thư mục nhé! 🌸', 'error'); return; }
-
+    const input = document.getElementById('newFolderInput'); const name = input.value.trim(); if (!name) return showToast('Nhập tên thư mục!', 'error');
     showToast('Đang tạo thư mục...');
-    // Lưu thẳng tiếng Việt có dấu vào Database
-    const { error } = await sb.from('file_manager').insert({
-        subject_name: currentViewingSubject,
-        parent_id: getCurrentFolderId(),
-        name: name,
-        is_folder: true
-    });
-
-    if (error) { showToast('❌ Lỗi: ' + error.message, 'error'); return; }
-
-    input.value = '';
-    document.getElementById('newFolderRow').style.display = 'none';
-    showToast(`✅ Đã tạo "${name}"!`, 'success');
-    await renderFileManager();
+    const { error } = await sb.from('file_manager').insert({ subject_name: currentViewingSubject, parent_id: getCurrentFolderId(), name: name, is_folder: true });
+    if (error) return showToast('❌ Lỗi: ' + error.message, 'error');
+    input.value = ''; document.getElementById('newFolderRow').style.display = 'none'; showToast(`✅ Đã tạo "${name}"!`, 'success'); await renderFileManager();
 };
 document.getElementById('newFolderInput').addEventListener('keydown', e => { if (e.key === 'Enter') createFolder(); if (e.key === 'Escape') toggleNewFolderRow(); });
 
-/* ================================================================
-   UPLOAD FILE (Lưu DB hiển thị, đẩy Storage vật lý)
-   ================================================================ */
-window.toggleUploadPanel = function() {
-    const panel = document.getElementById('uploadPanel');
-    const isHidden = panel.style.display === 'none';
-    panel.style.display = isHidden ? 'block' : 'none';
-    if (isHidden) document.getElementById('newFolderRow').style.display = 'none';
-};
-
+window.toggleUploadPanel = function() { const panel = document.getElementById('uploadPanel'); panel.style.display = panel.style.display === 'none' ? 'block' : 'none'; if(panel.style.display==='block') document.getElementById('newFolderRow').style.display='none'; };
 window.uploadMoreFile = async function () {
-    const btn = document.getElementById('btnUploadMore');
-    if (queueMore.length === 0) { showToast('Chọn file trước nhé! 🌸', 'error'); return; }
-
+    const btn = document.getElementById('btnUploadMore'); if (queueMore.length === 0) return showToast('Chọn file!', 'error');
     btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>Đang tải ${queueMore.length} file...`;
-    const wrap = document.getElementById('moreFileProgress'); const bar = document.getElementById('moreFileBar'); const status = document.getElementById('moreFileStatus');
-    wrap.classList.add('show'); let success = 0;
+    const wrap = document.getElementById('moreFileProgress'); const bar = document.getElementById('moreFileBar'); const status = document.getElementById('moreFileStatus'); wrap.classList.add('show'); let success = 0;
 
     for (let i = 0; i < queueMore.length; i++) {
-        const file = queueMore[i];
-        status.textContent = `⬆️ (${i+1}/${queueMore.length}) ${file.name}`;
-        bar.style.width = '0%';
+        const file = queueMore[i]; status.textContent = `⬆️ (${i+1}/${queueMore.length}) ${file.name}`; bar.style.width = '0%';
         let prog = 0; const iv = setInterval(() => { prog = Math.min(prog + Math.random()*15, 85); bar.style.width = prog + '%'; }, 150);
-
-        // 1. Chuẩn hóa tên để lưu vật lý lên Storage (Không dấu)
-        const safeSubject = sanitizeForSupabase(currentViewingSubject);
-        const safeFileName = sanitizeForSupabase(file.name);
-        const storagePath = `${safeSubject}/${Date.now()}_${safeFileName}`;
-
+        const storagePath = `${sanitizeForSupabase(currentViewingSubject)}/${Date.now()}_${sanitizeForSupabase(file.name)}`;
         const { error: storageError } = await sb.storage.from(BUCKET_NAME).upload(storagePath, file, { cacheControl: '3600', upsert: false });
-
         clearInterval(iv); bar.style.width = '100%';
-
-        if (storageError) {
-            status.textContent = `❌ Lỗi: ${file.name}`;
-            bar.style.background = 'linear-gradient(90deg,#ff6b6b,#ff9a9e)';
-            await new Promise(r => setTimeout(r, 1200)); bar.style.background = '';
-        } else {
-            // 2. Lưu Metadata vào Database (Có dấu tiếng Việt đầy đủ)
-            await sb.from('file_manager').insert({
-                subject_name: currentViewingSubject,
-                parent_id: getCurrentFolderId(),
-                name: file.name, // Tiếng Việt gốc
-                is_folder: false,
-                storage_path: storagePath,
-                file_size: file.size
-            });
-            success++; status.textContent = `✅ Xong: ${file.name}`;
-        }
+        if (storageError) { status.textContent = `❌ Lỗi: ${file.name}`; bar.style.background = 'linear-gradient(90deg,#ff6b6b,#ff9a9e)'; await new Promise(r => setTimeout(r, 1200)); bar.style.background = ''; }
+        else { await sb.from('file_manager').insert({ subject_name: currentViewingSubject, parent_id: getCurrentFolderId(), name: file.name, is_folder: false, storage_path: storagePath, file_size: file.size }); success++; status.textContent = `✅ Xong: ${file.name}`; }
         await new Promise(r => setTimeout(r, 250));
     }
-
-    status.textContent = `🎉 Xong ${success}/${queueMore.length} file!`;
-    setTimeout(() => { wrap.classList.remove('show'); bar.style.width = '0%'; }, 2200);
-    queueMore.length = 0; renderQueue(); btn.disabled = false; btn.innerHTML = '☁️ Tải lên';
-    showToast(`✅ Đã tải lên ${success} file!`, 'success');
-    await renderFileManager();
+    status.textContent = `🎉 Xong ${success}/${queueMore.length} file!`; setTimeout(() => { wrap.classList.remove('show'); bar.style.width = '0%'; }, 2200);
+    queueMore.length = 0; renderQueue(); btn.disabled = false; btn.innerHTML = '☁️ Tải lên'; showToast(`✅ Đã tải lên ${success} file!`, 'success'); await renderFileManager();
 };
 
-/* ================================================================
-   TẢI XUỐNG 1 FILE
-   ================================================================ */
-window.downloadFile = async function (storagePath, displayName) {
-    showToast('Đang tạo link tải... 🦦');
+window.previewFile = async function(storagePath, fileName) {
+    showToast('Đang tải bản xem trước... 🦦');
     const { data, error } = await sb.storage.from(BUCKET_NAME).createSignedUrl(storagePath, 3600);
-    if (error || !data) { showToast('❌ Không thể tạo link tải!', 'error'); return; }
-    const a = document.createElement('a'); a.href = data.signedUrl; a.download = displayName; a.target = '_blank';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    showToast('✅ Đang tải file...', 'success');
+    if (error || !data) return showToast('❌ Lỗi không thể tải file!', 'error');
+    const url = data.signedUrl; const ext = fileName.split('.').pop().toLowerCase();
+    const previewDiv = document.getElementById('previewContent'); document.getElementById('previewTitle').textContent = `👁️ ${fileName}`;
+    previewDiv.innerHTML = `<span class="spinner"></span> Đang xử lý...`;
+
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) previewDiv.innerHTML = `<img src="${url}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
+    else if (ext === 'pdf') previewDiv.innerHTML = `<iframe src="${url}" width="100%" height="100%" style="border:none;"></iframe>`;
+    else if (['mp4', 'webm', 'ogg'].includes(ext)) previewDiv.innerHTML = `<video controls width="100%" style="max-height:100%;"><source src="${url}" type="video/${ext}"></video>`;
+    else if (['mp3', 'wav'].includes(ext)) previewDiv.innerHTML = `<audio controls style="width: 80%;"><source src="${url}" type="audio/${ext}"></audio>`;
+    else if (['docx', 'xlsx', 'pptx'].includes(ext)) previewDiv.innerHTML = `<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}" width="100%" height="100%" style="border:none;"></iframe>`;
+    else previewDiv.innerHTML = `<div class="empty-state">Trình duyệt không hỗ trợ xem trước <b>.${ext}</b>.<br>Vui lòng tải xuống! 🦦</div>`;
+    document.getElementById('modalPreview').classList.add('open');
+};
+window.closePreviewModal = function() { document.getElementById('modalPreview').classList.remove('open'); setTimeout(() => { document.getElementById('previewContent').innerHTML = ''; }, 300); };
+
+window.downloadFile = async function (storagePath, displayName) {
+    showToast('Đang tạo link tải... 🦦'); const { data, error } = await sb.storage.from(BUCKET_NAME).createSignedUrl(storagePath, 3600);
+    if (error || !data) return showToast('❌ Không thể tạo link tải!', 'error');
+    const a = document.createElement('a'); a.href = data.signedUrl; a.download = displayName; a.target = '_blank'; document.body.appendChild(a); a.click(); document.body.removeChild(a); showToast('✅ Đang tải file...', 'success');
 };
 
-/* ================================================================
-   XÓA FILE & THƯ MỤC
-   ================================================================ */
 window.deleteFileItem = async function (dbId, storagePath) {
-    if (!confirm('Xóa tài liệu này?')) return;
-    showToast('Đang xóa...');
-    // 1. Xóa trên Storage
-    await sb.storage.from(BUCKET_NAME).remove([storagePath]);
-    // 2. Xóa trong DB
-    await sb.from('file_manager').delete().eq('id', dbId);
+    if (!confirm('Xóa tài liệu này?')) return; showToast('Đang xóa...');
+    await sb.storage.from(BUCKET_NAME).remove([storagePath]); await sb.from('file_manager').delete().eq('id', dbId);
     showToast('✅ Đã xóa!', 'success'); await renderFileManager();
 };
 
 window.deleteFolder = async function(folderId, folderName, e) {
-    e.stopPropagation();
-    if (!confirm(`Xóa toàn bộ thư mục "${folderName}"?\nLưu ý: Hành động này xóa vĩnh viễn mọi file bên trong.`)) return;
+    e.stopPropagation(); if (!confirm(`Xóa toàn bộ "${folderName}"?\nHành động này xóa vĩnh viễn mọi file bên trong.`)) return;
     showToast('Đang quét file để xóa...');
-
-    // Đệ quy lấy tất cả file con trong DB để xóa vật lý trên Storage trước
     async function getAllStoragePaths(parentId) {
-        let paths = [];
-        const { data } = await sb.from('file_manager').select('id, is_folder, storage_path').eq('parent_id', parentId);
-        if (data) {
-            for (let item of data) {
-                if (item.is_folder) {
-                    const childPaths = await getAllStoragePaths(item.id);
-                    paths = paths.concat(childPaths);
-                } else if (item.storage_path) {
-                    paths.push(item.storage_path);
-                }
-            }
-        }
-        return paths;
+        let paths = []; const { data } = await sb.from('file_manager').select('id, is_folder, storage_path').eq('parent_id', parentId);
+        if (data) for (let item of data) { if (item.is_folder) paths = paths.concat(await getAllStoragePaths(item.id)); else if (item.storage_path) paths.push(item.storage_path); } return paths;
     }
-
     const pathsToDelete = await getAllStoragePaths(folderId);
-    if (pathsToDelete.length > 0) {
-        // Xóa lô (batch delete) trên Storage
-        await sb.storage.from(BUCKET_NAME).remove(pathsToDelete);
-    }
-
-    // Xóa Thư mục trên DB (nhờ CASCADE, nó tự xóa mọi record con)
-    await sb.from('file_manager').delete().eq('id', folderId);
-
-    showToast(`✅ Đã xóa "${folderName}"!`, 'success');
-    await renderFileManager();
+    if (pathsToDelete.length > 0) await sb.storage.from(BUCKET_NAME).remove(pathsToDelete);
+    await sb.from('file_manager').delete().eq('id', folderId); showToast(`✅ Đã xóa!`, 'success'); await renderFileManager();
 };
 
-/* ================================================================
-   TẢI TOÀN BỘ THƯ MỤC (ZIP BẰNG JSZIP)
-   ================================================================ */
 window.downloadFolder = async function(folderId, folderName, e) {
-    e.stopPropagation();
-    showToast('Đang chuẩn bị gói dữ liệu. Chờ xíu nhé... 📦');
-
-    const zip = new JSZip();
-    let fileCount = 0;
-
-    // Đệ quy chui vào từng thư mục để tải file và đưa vào cây thư mục của JSZip
+    e.stopPropagation(); showToast('Đang chuẩn bị gói dữ liệu. Chờ xíu nhé... 📦');
+    const zip = new JSZip(); let fileCount = 0;
     async function addFilesToZip(currentFolderId, currentZipFolder) {
-        const { data } = await sb.from('file_manager').select('*').eq('parent_id', currentFolderId);
-        if (!data) return;
-
+        const { data } = await sb.from('file_manager').select('*').eq('parent_id', currentFolderId); if (!data) return;
         for (const item of data) {
-            if (item.is_folder) {
-                // Tạo thư mục bên trong file ZIP
-                const subZipFolder = currentZipFolder.folder(item.name);
-                await addFilesToZip(item.id, subZipFolder);
-            } else {
-                // Lấy link tải và fetch Blob
+            if (item.is_folder) await addFilesToZip(item.id, currentZipFolder.folder(item.name));
+            else {
                 const { data: urlData } = await sb.storage.from(BUCKET_NAME).createSignedUrl(item.storage_path, 3600);
-                if (urlData) {
-                    try {
-                        const response = await fetch(urlData.signedUrl);
-                        const blob = await response.blob();
-                        currentZipFolder.file(item.name, blob);
-                        fileCount++;
-                    } catch (err) { console.error("Lỗi tải file:", item.name); }
-                }
+                if (urlData) try { const response = await fetch(urlData.signedUrl); currentZipFolder.file(item.name, await response.blob()); fileCount++; } catch (err) {}
             }
         }
     }
-
     await addFilesToZip(folderId, zip);
-
-    if (fileCount === 0) {
-        showToast('Thư mục này rỗng, không có gì để nén cả 🦦', 'error'); return;
-    }
-
-    showToast(`Đang nén ${fileCount} file... 🗜️`);
-    zip.generateAsync({ type: "blob" }).then(function(content) {
-        saveAs(content, `${folderName}.zip`);
-        showToast('✅ Đã tải file ZIP!', 'success');
-    });
+    if (fileCount === 0) return showToast('Thư mục này rỗng 🦦', 'error');
+    showToast(`Đang nén ${fileCount} file... 🗜️`); zip.generateAsync({ type: "blob" }).then(content => { saveAs(content, `${folderName}.zip`); showToast('✅ Đã tải file ZIP!', 'success'); });
 };
 
-/* ================================================================
-   MODAL: THÊM MÔN (Không kèm file)
-   ================================================================ */
 document.getElementById('btnAddSubject').addEventListener('click', () => { document.getElementById('modalAddSubject').classList.add('open'); });
 window.saveNewSubject = function () {
-    const title = document.getElementById('inputSubTitle').value.trim();
-    const tag   = document.getElementById('inputSubTag').value.trim() || 'Môn học';
-    if (!title) { showToast('Nhập tên môn học nhé! 🌸', 'error'); return; }
-
-    dynamicSubjects.push({ id: Date.now(), title, tag });
-    localStorage.setItem('hinhnhan_subjects', JSON.stringify(dynamicSubjects));
-
+    const title = document.getElementById('inputSubTitle').value.trim(); const tag = document.getElementById('inputSubTag').value.trim() || 'Môn học';
+    if (!title) return showToast('Nhập tên môn học nhé! 🌸', 'error');
+    dynamicSubjects.push({ id: Date.now(), title, tag }); localStorage.setItem('hinhnhan_subjects', JSON.stringify(dynamicSubjects));
     closeModals(); renderAllSubjects(); showToast(`✅ Đã tạo "${title}"!`, 'success');
     if (!document.getElementById('fadeOverlay').classList.contains('hidden')) document.getElementById('btnExpand').click();
 };
 window.deleteSubject = function (id, e) {
     e.stopPropagation();
-    if (confirm('Xóa môn học này?\n(Lưu ý: Xóa trên giao diện, file trong Database vẫn còn)')) {
-        dynamicSubjects = dynamicSubjects.filter(s => s.id !== id);
-        localStorage.setItem('hinhnhan_subjects', JSON.stringify(dynamicSubjects));
-        renderAllSubjects(); showToast('✅ Đã xóa môn học!', 'success');
+    if (confirm('Xóa môn học này?\n(File trong Database vẫn còn)')) {
+        dynamicSubjects = dynamicSubjects.filter(s => s.id !== id); localStorage.setItem('hinhnhan_subjects', JSON.stringify(dynamicSubjects)); renderAllSubjects(); showToast('✅ Đã xóa!', 'success');
     }
 };
-
-function closeModals() {
-    document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
-    document.getElementById('inputSubTitle').value = ''; document.getElementById('inputSubTag').value = '';
-    queueMore.length = 0; renderQueue();
-}
+function closeModals() { document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open')); document.getElementById('inputSubTitle').value = ''; document.getElementById('inputSubTag').value = ''; queueMore.length = 0; renderQueue(); }
 
 renderAllSubjects();
 </script>
