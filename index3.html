@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
 
     <!-- ===== SUPABASE SDK ===== -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
 
     <style>
         /* === NỀN KẸO BÔNG === */
@@ -459,7 +460,20 @@ const BUCKET_NAME   = 'documents';                              // Tên bucket b
    ================================================================ */
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+  /* ================================================================
+   HÀM XỬ LÝ CHUỖI CHO SUPABASE (XÓA DẤU TIẾNG VIỆT)
+   ================================================================ */
+function sanitizeForSupabase(str) {
+    if (!str) return "";
+    // Xóa dấu tiếng Việt
+    str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
+    // Thay khoảng trắng bằng dấu gạch dưới
+    str = str.replace(/\s+/g, "_");
+    // Xóa tất cả ký tự lạ, CHỈ giữ lại chữ cái, số, gạch ngang, gạch dưới và dấu chấm
+    str = str.replace(/[^a-zA-Z0-9\-_.]/g, "");
+    return str;
+}
 /* ================================================================
    HOA ANH ĐÀO RƠI
    ================================================================ */
@@ -655,9 +669,9 @@ async function uploadQueueToSupabase(queue, subjectName, barId, wrapId, statusId
         bar.style.width = '0%';
 
         // Tên file trên Supabase: folder/timestamp_filename
-        const safeName = subjectName.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF ]/g, '_');
-        const filePath = `${safeName}/${Date.now()}_${file.name}`;
-
+        const safeName = sanitizeForSupabase(subjectName);
+        const safeFileName = sanitizeForSupabase(file.name);
+        const filePath = `${safeName}/${Date.now()}_${safeFileName}`;
         // Giả lập progress 0→85% trong lúc upload
         let prog = 0;
         const iv = setInterval(() => {
@@ -748,7 +762,7 @@ window.saveNewSubject = async function () {
 let currentPath = []; // stack điều hướng thư mục
 
 function getSafeSubject() {
-    return currentViewingSubject.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF ]/g, '_');
+    return sanitizeForSupabase(currentViewingSubject);
 }
 
 // Đường dẫn đầy đủ trên Supabase của thư mục đang xem
@@ -889,7 +903,9 @@ window.createFolder = async function() {
     if (!name) { showToast('Nhập tên thư mục nhé! 🌸', 'error'); return; }
 
     // Tên thư mục an toàn: chỉ giữ chữ, số, khoảng trắng, dấu gạch
-    const safeFolderName = name.replace(/[\/\\?%*:|"<>]/g, '_');
+    // (Xóa dòng cũ: const safeFolderName = name.replace(...))
+    // Thêm dòng mới:
+    const safeFolderName = sanitizeForSupabase(name);
     const placeholderPath = `${getCurrentSupabasePath()}/${safeFolderName}/.emptyFolderPlaceholder`;
 
     showToast('Đang tạo thư mục...');
@@ -1010,9 +1026,11 @@ window.uploadMoreFile = async function () {
         let prog = 0;
         const iv = setInterval(() => { prog = Math.min(prog + Math.random()*15, 85); bar.style.width = prog + '%'; }, 150);
 
+        const safeFileName = sanitizeForSupabase(file.name);
+
         const { error } = await sb.storage
             .from(BUCKET_NAME)
-            .upload(`${targetPath}/${Date.now()}_${file.name}`, file, { cacheControl: '3600', upsert: false });
+            .upload(`${targetPath}/${Date.now()}_${safeFileName}`, file, { cacheControl: '3600', upsert: false });
 
         clearInterval(iv);
         bar.style.width = '100%';
