@@ -6,9 +6,9 @@
     <title>Góc Học Tập - Hình Nhân 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
 
-    <!-- ===== SUPABASE SDK ===== -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <style>
         /* === NỀN KẸO BÔNG === */
@@ -174,6 +174,8 @@
         }
         .file-download-btn { color: #26d0ce; }
         .file-download-btn:hover { background: rgba(38,208,206,0.12); }
+        .folder-download-btn { background: none; border: none; color: #74b9ff; cursor: pointer; font-size: 1rem; padding: 3px 7px; border-radius: 7px; transition: all 0.2s; }
+        .folder-download-btn:hover { background: rgba(116,185,255,0.12); color: #0984e3; }
         .del-file-btn { color: #ff6b6b; }
         .del-file-btn:hover { background: rgba(255,107,107,0.12); }
 
@@ -284,73 +286,7 @@
 <div class="main-layout">
     <div class="bento-wrapper" id="bentoWrapper">
         <div class="bento-container" id="mainGrid">
-
-            <div class="bento-card card-major entrance-anim" onclick="openSubjectDetail('Luật Doanh nghiệp')">
-                <div><span class="tag">🏢 Chuyên ngành</span><h2 class="title">Luật Doanh nghiệp</h2><p class="desc">Nền tảng pháp lý vững chắc cho thương trường.</p></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
             </div>
-
-            <div class="bento-card card-english entrance-anim" onclick="openSubjectDetail('Luật Thương mại')">
-                <div><span class="tag">⚖️ Thương mại</span><h2 class="title">Luật Thương mại</h2></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-finance entrance-anim" onclick="openSubjectDetail('Luật Hợp đồng')">
-                <div><span class="tag">📝 Dân sự</span><h2 class="title">Luật Hợp đồng</h2></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-mindset entrance-anim" onclick="openSubjectDetail('Luật Quốc tế')">
-                <div><span class="tag">🌍 Toàn cầu</span><h2 class="title">Luật Quốc tế</h2></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-volleyball entrance-anim" onclick="openSubjectDetail('Tư tưởng Hồ Chí Minh')">
-                <div style="display: flex; flex-direction: column; height: 100%;">
-                    <span class="tag">🇻🇳 Lý luận</span>
-                    <h2 class="title">Tư tưởng HCM</h2>
-                    <p class="desc">Kim chỉ nam tư tưởng và hành động.</p>
-                    <img src="assets/15.webp" alt="Tư tưởng HCM" style="width: 100%; flex: 1; min-height: 0; object-fit: cover; border-radius: 20px; margin-top: 20px; margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-                </div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-startup entrance-anim" onclick="openSubjectDetail('Luật sở hữu trí tuệ')">
-                <div><span class="tag">💡 Sáng tạo</span><h2 class="title">Luật sở hữu trí tuệ</h2><p class="desc">Bảo vệ chất xám và ý tưởng đột phá.</p></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-grooming hidden-card" onclick="openSubjectDetail('Kinh tế chính trị')">
-                <div><span class="tag">📈 Kinh tế</span><h2 class="title">Kinh tế chính trị</h2></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-career hidden-card" onclick="openSubjectDetail('Luật Tố tụng hình sự')">
-                <div><span class="tag">⚖️ Hình sự</span><h2 class="title">Tố tụng hình sự</h2><p class="desc">Quy trình tố tụng chặt chẽ, bảo vệ công lý.</p></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-gym hidden-card" onclick="openSubjectDetail('Luật Tố tụng dân sự')">
-                <div><span class="tag">👨‍⚖️ Dân sự</span><h2 class="title">Tố tụng dân sự</h2></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-tools hidden-card" onclick="openSubjectDetail('Chủ nghĩa xã hội học')">
-                <div><span class="tag">☭ Triết học</span><h2 class="title">CNXH Học</h2></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-2030 hidden-card" onclick="openSubjectDetail('Luật Thương mại quốc tế')">
-                <div><span class="tag">🚢 Giao thương</span><h2 class="title">Thương mại QT</h2><p class="desc">Pháp lý trong bối cảnh hội nhập kinh tế.</p></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-            <div class="bento-card card-dc hidden-card" onclick="openSubjectDetail('Pháp luật về bảo hiểm quốc tế')">
-                <div><span class="tag">🛡️ Bảo hiểm</span><h2 class="title">Bảo hiểm QT</h2><p class="desc">Giảm thiểu rủi ro trong giao thương quốc tế.</p></div>
-                <div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>
-            </div>
-
-        </div>
 
         <div class="fade-overlay" id="fadeOverlay">
             <button class="btn-expand" id="btnExpand">Mở rộng không gian 🌸</button>
@@ -359,7 +295,6 @@
     </div>
 </div>
 
-<!-- Modal: Thêm môn học mới -->
 <div class="modal-backdrop" id="modalAddSubject">
     <div class="modal">
         <h2>✨ Thêm Không Gian Mới</h2>
@@ -371,20 +306,6 @@
             <label class="form-label">Phân loại (Tag)</label>
             <input class="form-input" id="inputSubTag" type="text" placeholder="VD: Đại cương">
         </div>
-        <div class="form-group">
-            <label class="form-label">Đính kèm tài liệu (Tuỳ chọn)</label>
-            <div class="file-upload-box" id="dropZoneAdd">
-                <input type="file" id="inputSubFile" multiple>
-                <span class="upload-zone-icon">📁</span>
-                <span class="upload-zone-text">Kéo thả hoặc nhấn để chọn file</span>
-                <span class="upload-zone-hint">Mọi loại file • Chọn nhiều cùng lúc</span>
-            </div>
-            <div class="file-queue" id="queueAdd"></div>
-            <div class="upload-progress-wrap" id="addSubProgress">
-                <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="addSubBar"></div></div>
-                <div class="upload-status-text" id="addSubStatus"></div>
-            </div>
-        </div>
         <div class="modal-actions">
             <button class="modal-btn btn-cancel" onclick="closeModals()">Hủy</button>
             <button class="modal-btn btn-submit" id="btnSaveSubject" onclick="saveNewSubject()">Tạo mới 🌸</button>
@@ -392,21 +313,17 @@
     </div>
 </div>
 
-<!-- Modal: Xem chi tiết môn & quản lý file (File Manager) -->
 <div class="modal-backdrop" id="modalSubjectDetail">
     <div class="modal" style="max-width:520px;">
         <h2 id="detailTitle">Tên Môn Học</h2>
 
-        <!-- Breadcrumb điều hướng thư mục -->
         <div class="breadcrumb" id="breadcrumb"></div>
 
-        <!-- Toolbar: Tạo thư mục + Upload -->
         <div class="file-toolbar">
             <button class="toolbar-btn" onclick="toggleNewFolderRow()">📁 Tạo thư mục</button>
             <button class="toolbar-btn" onclick="toggleUploadPanel()">⬆️ Tải file lên</button>
         </div>
 
-        <!-- Row tạo thư mục mới (ẩn mặc định) -->
         <div class="new-folder-row" id="newFolderRow" style="display:none;">
             <span>📁</span>
             <input class="new-folder-input" id="newFolderInput" type="text" placeholder="Tên thư mục mới..." maxlength="60">
@@ -414,7 +331,6 @@
             <button class="new-folder-cancel" onclick="toggleNewFolderRow()">×</button>
         </div>
 
-        <!-- Panel upload file (ẩn mặc định) -->
         <div id="uploadPanel" style="display:none; margin-bottom:12px;">
             <div class="file-upload-box" id="dropZoneMore">
                 <input type="file" id="inputUploadMoreFile" multiple>
@@ -432,7 +348,6 @@
             </button>
         </div>
 
-        <!-- Danh sách thư mục + file -->
         <div class="form-label" id="fileListLabel">Nội dung thư mục</div>
         <div class="file-list" id="detailFileList" style="max-height:280px;">
             <div class="empty-state">Đang tải... 🦦</div>
@@ -444,38 +359,33 @@
     </div>
 </div>
 
-<!-- Toast thông báo -->
 <div class="toast" id="toastMsg"></div>
 
 <script>
 /* ================================================================
-   ⚙️  CẤU HÌNH SUPABASE — Thay 2 giá trị này bằng của bạn
-   ================================================================ */
-const SUPABASE_URL  = 'https://kmouggtquexofrrsvtmk.supabase.co';   // 👈 Thay ở đây
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttb3VnZ3RxdWV4b2ZycnN2dG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTAzOTAsImV4cCI6MjA5NDQyNjM5MH0.ACKaXz68CkGGnQW8A4UUVAov9oBBxBVgHe_ac3Tb-yU';              // 👈 Thay ở đây
-const BUCKET_NAME   = 'documents';                              // Tên bucket bạn tạo
-
-/* ================================================================
-   Khởi tạo client Supabase
-   ================================================================ */
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  /* ================================================================
-   HÀM XỬ LÝ CHUỖI CHO SUPABASE (XÓA DẤU TIẾNG VIỆT)
+   HÀM XỬ LÝ CHUỖI CHO SUPABASE (XÓA DẤU TIẾNG VIỆT ĐỂ LÀM KEY)
    ================================================================ */
 function sanitizeForSupabase(str) {
     if (!str) return "";
-    // Xóa dấu tiếng Việt
     str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     str = str.replace(/đ/g, "d").replace(/Đ/g, "D");
-    // Thay khoảng trắng bằng dấu gạch dưới
     str = str.replace(/\s+/g, "_");
-    // Xóa tất cả ký tự lạ, CHỈ giữ lại chữ cái, số, gạch ngang, gạch dưới và dấu chấm
     str = str.replace(/[^a-zA-Z0-9\-_.]/g, "");
     return str;
 }
+
 /* ================================================================
-   HOA ANH ĐÀO RƠI
+   ⚙️  CẤU HÌNH SUPABASE
+   ================================================================ */
+const SUPABASE_URL  = 'https://kmouggtquexofrrsvtmk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttb3VnZ3RxdWV4b2ZycnN2dG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTAzOTAsImV4cCI6MjA5NDQyNjM5MH0.ACKaXz68CkGGnQW8A4UUVAov9oBBxBVgHe_ac3Tb-yU';
+const BUCKET_NAME   = 'documents';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ================================================================
+   HOA ANH ĐÀO RƠI (Giữ nguyên)
    ================================================================ */
 (function () {
     const canvas = document.getElementById('sakura-canvas');
@@ -501,29 +411,53 @@ function sanitizeForSupabase(str) {
 })();
 
 /* ================================================================
-   MỞ RỘNG KHÔNG GIAN
+   GIAO DIỆN MÔN HỌC (MIX FIX & DYNAMIC)
    ================================================================ */
-document.addEventListener('animationend', function (e) { if (e.animationName === 'slideUpFade') { e.target.classList.remove('entrance-anim'); e.target.style.animationDelay = '0s'; } });
-document.getElementById('btnExpand').addEventListener('click', function () {
-    const wrapper = document.getElementById('bentoWrapper');
-    const overlay = document.getElementById('fadeOverlay');
-    const hiddenCards = document.querySelectorAll('.hidden-card');
-    overlay.classList.add('hidden'); wrapper.style.height = wrapper.scrollHeight + 'px';
-    hiddenCards.forEach((card, i) => { card.style.animationDelay = `${i * 0.1}s`; card.classList.remove('hidden-card'); card.classList.add('entrance-anim'); });
-    setTimeout(() => { wrapper.style.height = wrapper.scrollHeight + 'px'; setTimeout(() => { wrapper.style.height = 'auto'; }, 900); }, 150);
-});
+const fixedSubjects = [
+    { title: 'Luật Doanh nghiệp', tag: '🏢 Chuyên ngành', class: 'card-major', desc: 'Nền tảng pháp lý vững chắc cho thương trường.' },
+    { title: 'Luật Thương mại', tag: '⚖️ Thương mại', class: 'card-english' },
+    { title: 'Luật Hợp đồng', tag: '📝 Dân sự', class: 'card-finance' },
+    { title: 'Luật Quốc tế', tag: '🌍 Toàn cầu', class: 'card-mindset' },
+    { title: 'Tư tưởng HCM', tag: '🇻🇳 Lý luận', class: 'card-volleyball', isSpecial: true },
+    { title: 'Luật sở hữu trí tuệ', tag: '💡 Sáng tạo', class: 'card-startup', desc: 'Bảo vệ chất xám và ý tưởng đột phá.' },
+    { title: 'Kinh tế chính trị', tag: '📈 Kinh tế', class: 'card-grooming', hidden: true },
+    { title: 'Tố tụng hình sự', tag: '⚖️ Hình sự', class: 'card-career', desc: 'Quy trình tố tụng chặt chẽ, bảo vệ công lý.', hidden: true },
+    { title: 'Tố tụng dân sự', tag: '👨‍⚖️ Dân sự', class: 'card-gym', hidden: true },
+    { title: 'CNXH Học', tag: '☭ Triết học', class: 'card-tools', hidden: true },
+    { title: 'Thương mại QT', tag: '🚢 Giao thương', class: 'card-2030', desc: 'Pháp lý trong bối cảnh hội nhập kinh tế.', hidden: true },
+    { title: 'Bảo hiểm QT', tag: '🛡️ Bảo hiểm', class: 'card-dc', desc: 'Giảm thiểu rủi ro trong giao thương quốc tế.', hidden: true }
+];
 
-/* ================================================================
-   HỆ THỐNG MÔN HỌC ĐỘNG (lưu vào localStorage — chỉ lưu metadata)
-   ================================================================ */
-let subjects = JSON.parse(localStorage.getItem('hinhnhan_subjects') || '[]');
-let currentViewingSubject = '';
-const mainGrid = document.getElementById('mainGrid');
+let dynamicSubjects = JSON.parse(localStorage.getItem('hinhnhan_subjects') || '[]');
 
-function renderDynamicSubjects() {
-    document.querySelectorAll('.dynamic-card').forEach(c => c.remove());
+function renderAllSubjects() {
+    const mainGrid = document.getElementById('mainGrid');
+    mainGrid.innerHTML = '';
     const isExpanded = document.getElementById('fadeOverlay').classList.contains('hidden');
-    subjects.forEach((sub) => {
+
+    // 1. Render Fixed
+    fixedSubjects.forEach((sub, i) => {
+        let visibilityClass = sub.hidden ? (isExpanded ? 'entrance-anim' : 'hidden-card') : 'entrance-anim';
+        let html = '';
+        if (sub.isSpecial) {
+            html = `<div style="display: flex; flex-direction: column; height: 100%;">
+                    <span class="tag">${sub.tag}</span><h2 class="title">${sub.title}</h2><p class="desc">Kim chỉ nam tư tưởng và hành động.</p>
+                    <img src="assets/15.webp" alt="Tư tưởng HCM" style="width: 100%; flex: 1; min-height: 0; object-fit: cover; border-radius: 20px; margin-top: 20px; margin-bottom: 40px; border: 2px solid rgba(255,255,255,0.4);">
+                </div>`;
+        } else {
+            html = `<div><span class="tag">${sub.tag}</span><h2 class="title">${sub.title}</h2>${sub.desc ? `<p class="desc">${sub.desc}</p>` : ''}</div>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = `bento-card ${sub.class} ${visibilityClass}`;
+        card.style.animationDelay = `${i * 0.1}s`;
+        card.onclick = () => openSubjectDetail(sub.title);
+        card.innerHTML = `${html}<div class="action-btn"><span class="plus">📂</span><span class="arrow">➔</span></div>`;
+        mainGrid.appendChild(card);
+    });
+
+    // 2. Render Dynamic
+    dynamicSubjects.forEach((sub) => {
         const card = document.createElement('div');
         card.className = `bento-card del-action dynamic-card ${isExpanded ? 'entrance-anim' : 'hidden-card'}`;
         card.style.background = 'linear-gradient(135deg, #e0c3fc, #8ec5fc)';
@@ -535,366 +469,166 @@ function renderDynamicSubjects() {
         `;
         mainGrid.appendChild(card);
     });
+
     if (isExpanded) { document.getElementById('bentoWrapper').style.height = 'auto'; }
 }
 
+document.addEventListener('animationend', function (e) { if (e.animationName === 'slideUpFade') { e.target.classList.remove('entrance-anim'); e.target.style.animationDelay = '0s'; } });
+document.getElementById('btnExpand').addEventListener('click', function () {
+    const wrapper = document.getElementById('bentoWrapper');
+    const overlay = document.getElementById('fadeOverlay');
+    overlay.classList.add('hidden');
+    renderAllSubjects(); // Re-render to show hidden cards
+    setTimeout(() => { wrapper.style.height = wrapper.scrollHeight + 'px'; setTimeout(() => { wrapper.style.height = 'auto'; }, 900); }, 50);
+});
+
 /* ================================================================
-   TOAST & HELPERS
+   TIỆN ÍCH
    ================================================================ */
 function showToast(msg, type = '') {
-    const t = document.getElementById('toastMsg');
-    t.textContent = msg;
-    t.className = `toast ${type} show`;
+    const t = document.getElementById('toastMsg'); t.textContent = msg; t.className = `toast ${type} show`;
     setTimeout(() => { t.className = 'toast'; }, 3000);
 }
-
 function formatBytes(bytes) {
     if (!bytes) return '';
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
-
 function getFileIcon(name) {
     const ext = name.split('.').pop().toLowerCase();
     const icons = { pdf: '📄', doc: '📝', docx: '📝', xls: '📊', xlsx: '📊', ppt: '📑', pptx: '📑', jpg: '🖼️', jpeg: '🖼️', png: '🖼️', zip: '🗜️', rar: '🗜️' };
-    return icons[ext] || '📁';
+    return icons[ext] || '📄';
 }
 
 /* ================================================================
-   SUPABASE: LẤY DANH SÁCH FILE TRONG MÔN HỌC
+   QUEUE UPLOAD
    ================================================================ */
-async function listFilesFromSupabase(subjectName) {
-    const safeName = subjectName.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF ]/g, '_');
-    const { data, error } = await sb.storage
-        .from(BUCKET_NAME)
-        .list(safeName, { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
-
-    if (error) { console.error(error); return []; }
-    return data || [];
-}
-
-/* ================================================================
-   SUPABASE: LẤY URL TẢI XUỐNG (signed URL, hết hạn sau 1 giờ)
-   ================================================================ */
-async function getDownloadUrl(filePath) {
-    const { data, error } = await sb.storage
-        .from(BUCKET_NAME)
-        .createSignedUrl(filePath, 3600); // 3600 giây = 1 giờ
-    if (error) return null;
-    return data.signedUrl;
-}
-
-/* ================================================================
-   SUPABASE: XÓA FILE
-   ================================================================ */
-async function deleteFileFromSupabase(filePath) {
-    const { error } = await sb.storage.from(BUCKET_NAME).remove([filePath]);
-    return !error;
-}
-
-/* ================================================================
-   QUEUE — danh sách file đã chọn, chờ upload
-   ================================================================ */
-let queueAdd  = [];   // Queue cho modal Thêm môn
-let queueMore = [];   // Queue cho modal Chi tiết
-
-function renderQueue(queue, containerId) {
-    const el = document.getElementById(containerId);
-    if (queue.length === 0) { el.innerHTML = ''; return; }
-    el.innerHTML = queue.map((f, i) => `
+let queueMore = [];
+function renderQueue() {
+    const el = document.getElementById('queueMore');
+    if (queueMore.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = queueMore.map((f, i) => `
         <div class="queue-item">
-            <span>${getFileIcon(f.name)}</span>
-            <span class="queue-item-name" title="${f.name}">${f.name}</span>
-            <span class="queue-item-size">${formatBytes(f.size)}</span>
-            <span class="queue-item-status" id="qstatus-${containerId}-${i}">⏳</span>
-            <button class="queue-item-remove" onclick="removeFromQueue('${containerId}',${i})">×</button>
+            <span>${getFileIcon(f.name)}</span><span class="queue-item-name" title="${f.name}">${f.name}</span>
+            <span class="queue-item-size">${formatBytes(f.size)}</span><span class="queue-item-status" id="qstatus-${i}">⏳</span>
+            <button class="queue-item-remove" onclick="removeFromQueue(${i})">×</button>
         </div>
     `).join('');
 }
-
-window.removeFromQueue = function(containerId, idx) {
-    if (containerId === 'queueAdd') queueAdd.splice(idx, 1), renderQueue(queueAdd, 'queueAdd');
-    else queueMore.splice(idx, 1), renderQueue(queueMore, 'queueMore');
-};
-
-function addFilesToQueue(files, queue, containerId) {
-    Array.from(files).forEach(f => queue.push(f));
-    renderQueue(queue, containerId);
-}
-
-/* ================================================================
-   DRAG & DROP SETUP
-   ================================================================ */
-function setupDropZone(zoneId, inputId, queue, containerId) {
-    const zone = document.getElementById(zoneId);
-    const input = document.getElementById(inputId);
-
-    // Chọn file qua click
-    input.addEventListener('change', function() {
-        addFilesToQueue(this.files, queue, containerId);
-        this.value = ''; // Reset để có thể chọn lại cùng file
-    });
-
-    // Drag & Drop
-    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', e => {
-        e.preventDefault();
-        zone.classList.remove('drag-over');
-        addFilesToQueue(e.dataTransfer.files, queue, containerId);
-    });
-}
-
-setupDropZone('dropZoneAdd',  'inputSubFile',        queueAdd,  'queueAdd');
-setupDropZone('dropZoneMore', 'inputUploadMoreFile', queueMore, 'queueMore');
-
-/* ================================================================
-   UPLOAD NHIỀU FILE TUẦN TỰ (có progress per-file)
-   ================================================================ */
-async function uploadQueueToSupabase(queue, subjectName, barId, wrapId, statusId) {
-    const wrap   = document.getElementById(wrapId);
-    const bar    = document.getElementById(barId);
-    const status = document.getElementById(statusId);
-
-    if (queue.length === 0) return 0;
-
-    wrap.classList.add('show');
-    let successCount = 0;
-
-    for (let i = 0; i < queue.length; i++) {
-        const file = queue[i];
-        const label = `(${i+1}/${queue.length}) ${file.name}`;
-        status.textContent = `⬆️ Đang tải: ${label}`;
-        bar.style.width = '0%';
-
-        // Tên file trên Supabase: folder/timestamp_filename
-        const safeName = sanitizeForSupabase(subjectName);
-        const safeFileName = sanitizeForSupabase(file.name);
-        const filePath = `${safeName}/${Date.now()}_${safeFileName}`;
-        // Giả lập progress 0→85% trong lúc upload
-        let prog = 0;
-        const iv = setInterval(() => {
-            prog = Math.min(prog + Math.random() * 15, 85);
-            bar.style.width = prog + '%';
-        }, 150);
-
-        const { error } = await sb.storage
-            .from(BUCKET_NAME)
-            .upload(filePath, file, { cacheControl: '3600', upsert: false });
-
-        clearInterval(iv);
-        bar.style.width = '100%';
-
-        if (error) {
-            status.textContent = `❌ Lỗi "${file.name}": ${error.message}`;
-            bar.style.background = 'linear-gradient(90deg,#ff6b6b,#ff9a9e)';
-            await new Promise(r => setTimeout(r, 1500));
-            bar.style.background = '';
-        } else {
-            successCount++;
-            status.textContent = `✅ Xong: ${file.name}`;
-        }
-
-        await new Promise(r => setTimeout(r, 300));
-    }
-
-    status.textContent = `🎉 Tải lên xong ${successCount}/${queue.length} file!`;
-    bar.style.width = '100%';
-    setTimeout(() => { wrap.classList.remove('show'); bar.style.width = '0%'; }, 2500);
-
-    return successCount;
-}
-
-/* ================================================================
-   MODAL: ĐÓNG
-   ================================================================ */
-function closeModals() {
-    document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
-    document.getElementById('inputSubTitle').value = '';
-    document.getElementById('inputSubTag').value = '';
-    // Reset queues
-    queueAdd.length = 0;
-    queueMore.length = 0;
-    renderQueue(queueAdd,  'queueAdd');
-    renderQueue(queueMore, 'queueMore');
-}
-
-/* ================================================================
-   MODAL: THÊM MÔN MỚI
-   ================================================================ */
-document.getElementById('btnAddSubject').addEventListener('click', () => {
-    document.getElementById('modalAddSubject').classList.add('open');
+window.removeFromQueue = function(idx) { queueMore.splice(idx, 1); renderQueue(); };
+document.getElementById('inputUploadMoreFile').addEventListener('change', function() {
+    Array.from(this.files).forEach(f => queueMore.push(f)); renderQueue(); this.value = '';
 });
-
-window.saveNewSubject = async function () {
-    const title = document.getElementById('inputSubTitle').value.trim();
-    const tag   = document.getElementById('inputSubTag').value.trim() || 'Môn học';
-    const btn   = document.getElementById('btnSaveSubject');
-
-    if (!title) { showToast('Bạn ơi nhớ nhập tên môn học nhé! 🌸', 'error'); return; }
-
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Đang lưu...';
-
-    if (queueAdd.length > 0) {
-        await uploadQueueToSupabase(queueAdd, title, 'addSubBar', 'addSubProgress', 'addSubStatus');
-    }
-
-    subjects.push({ id: Date.now(), title, tag });
-    localStorage.setItem('hinhnhan_subjects', JSON.stringify(subjects));
-
-    btn.disabled = false;
-    btn.innerHTML = 'Tạo mới 🌸';
-    closeModals();
-    renderDynamicSubjects();
-    showToast(`✅ Đã tạo "${title}" thành công!`, 'success');
-
-    if (!document.getElementById('fadeOverlay').classList.contains('hidden')) {
-        document.getElementById('btnExpand').click();
-    }
-};
+const zoneMore = document.getElementById('dropZoneMore');
+zoneMore.addEventListener('dragover', e => { e.preventDefault(); zoneMore.classList.add('drag-over'); });
+zoneMore.addEventListener('dragleave', () => zoneMore.classList.remove('drag-over'));
+zoneMore.addEventListener('drop', e => { e.preventDefault(); zoneMore.classList.remove('drag-over'); Array.from(e.dataTransfer.files).forEach(f => queueMore.push(f)); renderQueue(); });
 
 /* ================================================================
-   MODAL: XEM & QUẢN LÝ FILE — FILE MANAGER CÓ THƯ MỤC
-   currentPath = mảng các segment thư mục, VD: ['Luật_Hợp_đồng', 'Tuần 1']
+   STATE BREADCRUMB (Điều hướng Thư mục theo Database)
    ================================================================ */
-let currentPath = []; // stack điều hướng thư mục
+let currentViewingSubject = '';
+// folderStack lưu mảng các object: { id: UUID hoặc null (gốc), name: Tên hiển thị }
+let folderStack = [];
 
-function getSafeSubject() {
-    return sanitizeForSupabase(currentViewingSubject);
-}
-
-// Đường dẫn đầy đủ trên Supabase của thư mục đang xem
-function getCurrentSupabasePath() {
-    return currentPath.join('/');
+function getCurrentFolderId() {
+    return folderStack[folderStack.length - 1].id;
 }
 
 window.openSubjectDetail = async function (title) {
     currentViewingSubject = title;
-    currentPath = [getSafeSubject()]; // root = tên môn đã safe
+    folderStack = [{ id: null, name: title }]; // Bắt đầu ở thư mục gốc của Môn học
     document.getElementById('detailTitle').textContent = `📂 ${title}`;
     document.getElementById('modalSubjectDetail').classList.add('open');
-    // Đóng panel upload & folder row nếu đang mở
     document.getElementById('uploadPanel').style.display = 'none';
     document.getElementById('newFolderRow').style.display = 'none';
     await renderFileManager();
 };
 
-/* ================================================================
-   BREADCRUMB
-   ================================================================ */
 function renderBreadcrumb() {
     const bc = document.getElementById('breadcrumb');
-    // currentPath[0] = tên môn (safe), hiển thị là tên gốc
-    const segments = currentPath.map((seg, i) => {
-        const isLast = i === currentPath.length - 1;
-        const label  = i === 0 ? currentViewingSubject : seg;
-        if (isLast) return `<span class="breadcrumb-item active">📂 ${label}</span>`;
-        return `<button class="breadcrumb-item" onclick="navigateTo(${i})">📂 ${label}</button>
-                <span class="breadcrumb-sep">›</span>`;
+    const segments = folderStack.map((seg, i) => {
+        const isLast = i === folderStack.length - 1;
+        if (isLast) return `<span class="breadcrumb-item active">📂 ${seg.name}</span>`;
+        return `<button class="breadcrumb-item" onclick="navigateTo(${i})">📂 ${seg.name}</button><span class="breadcrumb-sep">›</span>`;
     });
     bc.innerHTML = segments.join('');
 }
 
-// Điều hướng về thư mục ở index idx trong stack
 window.navigateTo = async function(idx) {
-    currentPath = currentPath.slice(0, idx + 1);
+    folderStack = folderStack.slice(0, idx + 1);
     await renderFileManager();
 };
 
 /* ================================================================
-   RENDER FILE MANAGER (thư mục + file của path hiện tại)
+   RENDER FILE MANAGER (Từ Database)
    ================================================================ */
 async function renderFileManager() {
     renderBreadcrumb();
     const listDiv = document.getElementById('detailFileList');
-    listDiv.innerHTML = `<div class="empty-state"><span class="spinner"></span> Đang tải...</div>`;
+    listDiv.innerHTML = `<div class="empty-state"><span class="spinner"></span> Đang tải dữ liệu...</div>`;
 
-    const path = getCurrentSupabasePath();
-    const { data, error } = await sb.storage
-        .from(BUCKET_NAME)
-        .list(path, { limit: 200, sortBy: { column: 'name', order: 'asc' } });
+    const parentId = getCurrentFolderId();
 
-    if (error) {
-        listDiv.innerHTML = `<div class="empty-state">❌ Lỗi tải: ${error.message}</div>`;
-        return;
+    // Lấy dữ liệu từ Database thay vì Storage
+    let query = sb.from('file_manager').select('*').eq('subject_name', currentViewingSubject);
+
+    if (parentId === null) {
+        query = query.is('parent_id', null);
+    } else {
+        query = query.eq('parent_id', parentId);
     }
 
-    const items = (data || []).filter(f => f.name !== '.emptyFolderPlaceholder');
+    const { data, error } = await query.order('is_folder', { ascending: false }).order('name', { ascending: true });
 
-    // Tách thư mục (id=null) và file (id!=null)
-    const folders = items.filter(f => f.id === null);
-    const files   = items.filter(f => f.id !== null);
+    if (error) { listDiv.innerHTML = `<div class="empty-state">❌ Lỗi: ${error.message}</div>`; return; }
 
-    if (folders.length === 0 && files.length === 0) {
-        listDiv.innerHTML = `<div class="empty-state">Thư mục trống.<br>Tạo thư mục hoặc tải file lên nhé! 🦦</div>`;
-        return;
+    if (!data || data.length === 0) {
+        listDiv.innerHTML = `<div class="empty-state">Thư mục trống.<br>Tạo thư mục hoặc tải file lên nhé! 🦦</div>`; return;
     }
 
     let html = '';
-
-    // Render thư mục trước
-    folders.forEach(folder => {
-        html += `
-            <div class="folder-item" onclick="enterFolder('${folder.name.replace(/'/g,"\\'")}')">
-                <div class="folder-item-left">
-                    <span>📁</span>
-                    <span class="folder-item-name">${folder.name}</span>
-                </div>
+    data.forEach(item => {
+        if (item.is_folder) {
+            html += `
+            <div class="folder-item" onclick="enterFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}')">
+                <div class="folder-item-left"><span>📁</span><span class="folder-item-name">${item.name}</span></div>
                 <div class="folder-item-actions" onclick="event.stopPropagation()">
-                    <button class="folder-del-btn" onclick="deleteFolder('${folder.name.replace(/'/g,"\\'")}', event)" title="Xóa thư mục">🗑️</button>
+                    <button class="folder-download-btn" onclick="downloadFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}', event)" title="Tải toàn bộ thư mục (ZIP)">📥 Zip</button>
+                    <button class="folder-del-btn" onclick="deleteFolder('${item.id}', '${item.name.replace(/'/g,"\\'")}', event)" title="Xóa thư mục">🗑️</button>
                 </div>
             </div>`;
-    });
-
-    // Render file
-    files.forEach(f => {
-        const filePath = `${path}/${f.name}`;
-        const icon = getFileIcon(f.name);
-        const displayName = f.name.replace(/^\d+_/, '');
-        const size = formatBytes(f.metadata?.size);
-        html += `
+        } else {
+            const size = formatBytes(item.file_size);
+            html += `
             <div class="file-item">
-                <div class="file-item-left">
-                    <span>${icon}</span>
-                    <span class="file-item-name" title="${displayName}">${displayName}</span>
-                    ${size ? `<span class="file-size">${size}</span>` : ''}
-                </div>
+                <div class="file-item-left"><span>${getFileIcon(item.name)}</span><span class="file-item-name" title="${item.name}">${item.name}</span>${size ? `<span class="file-size">${size}</span>` : ''}</div>
                 <div class="file-item-actions">
-                    <button class="file-download-btn" onclick="downloadFile('${filePath}','${displayName.replace(/'/g,"\\'")}')" title="Tải xuống">⬇️</button>
-                    <button class="del-file-btn" onclick="deleteFileItem('${filePath}')" title="Xóa">×</button>
+                    <button class="file-download-btn" onclick="downloadFile('${item.storage_path}','${item.name.replace(/'/g,"\\'")}')" title="Tải xuống">⬇️</button>
+                    <button class="del-file-btn" onclick="deleteFileItem('${item.id}', '${item.storage_path}')" title="Xóa">×</button>
                 </div>
             </div>`;
+        }
     });
-
     listDiv.innerHTML = html;
 }
 
-/* ================================================================
-   ĐIỀU HƯỚNG VÀO THƯ MỤC CON
-   ================================================================ */
-window.enterFolder = async function(folderName) {
-    currentPath.push(folderName);
-    // Đóng panel upload khi đổi thư mục
+window.enterFolder = async function(id, name) {
+    folderStack.push({ id, name });
     document.getElementById('uploadPanel').style.display = 'none';
     document.getElementById('newFolderRow').style.display = 'none';
     await renderFileManager();
 };
 
 /* ================================================================
-   TẠO THƯ MỤC MỚI
-   Supabase không có API tạo thư mục trực tiếp — trick: upload 1 file
-   placeholder rỗng vào đường dẫn thư mục đó
+   TẠO THƯ MỤC (Lưu vào DB với tiếng Việt)
    ================================================================ */
 window.toggleNewFolderRow = function() {
     const row = document.getElementById('newFolderRow');
     const isHidden = row.style.display === 'none';
     row.style.display = isHidden ? 'flex' : 'none';
-    if (isHidden) {
-        document.getElementById('newFolderInput').focus();
-        document.getElementById('uploadPanel').style.display = 'none';
-    }
+    if (isHidden) { document.getElementById('newFolderInput').focus(); document.getElementById('uploadPanel').style.display = 'none'; }
 };
 
 window.createFolder = async function() {
@@ -902,71 +636,26 @@ window.createFolder = async function() {
     const name  = input.value.trim();
     if (!name) { showToast('Nhập tên thư mục nhé! 🌸', 'error'); return; }
 
-    // Tên thư mục an toàn: chỉ giữ chữ, số, khoảng trắng, dấu gạch
-    // (Xóa dòng cũ: const safeFolderName = name.replace(...))
-    // Thêm dòng mới:
-    const safeFolderName = sanitizeForSupabase(name);
-    const placeholderPath = `${getCurrentSupabasePath()}/${safeFolderName}/.emptyFolderPlaceholder`;
-
     showToast('Đang tạo thư mục...');
+    // Lưu thẳng tiếng Việt có dấu vào Database
+    const { error } = await sb.from('file_manager').insert({
+        subject_name: currentViewingSubject,
+        parent_id: getCurrentFolderId(),
+        name: name,
+        is_folder: true
+    });
 
-    const emptyBlob = new Blob([''], { type: 'text/plain' });
-    const { error } = await sb.storage
-        .from(BUCKET_NAME)
-        .upload(placeholderPath, emptyBlob, { cacheControl: '3600', upsert: true });
-
-    if (error) { showToast('❌ Lỗi tạo thư mục: ' + error.message, 'error'); return; }
+    if (error) { showToast('❌ Lỗi: ' + error.message, 'error'); return; }
 
     input.value = '';
     document.getElementById('newFolderRow').style.display = 'none';
-    showToast(`✅ Đã tạo thư mục "${name}"!`, 'success');
+    showToast(`✅ Đã tạo "${name}"!`, 'success');
     await renderFileManager();
 };
-
-// Enter để tạo thư mục
-document.getElementById('newFolderInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') createFolder();
-    if (e.key === 'Escape') toggleNewFolderRow();
-});
+document.getElementById('newFolderInput').addEventListener('keydown', e => { if (e.key === 'Enter') createFolder(); if (e.key === 'Escape') toggleNewFolderRow(); });
 
 /* ================================================================
-   XÓA THƯ MỤC (xóa toàn bộ file bên trong trước)
-   ================================================================ */
-window.deleteFolder = async function(folderName, e) {
-    e.stopPropagation();
-    if (!confirm(`Xóa thư mục "${folderName}" và toàn bộ file bên trong?`)) return;
-    showToast('Đang xóa...');
-
-    const folderPath = `${getCurrentSupabasePath()}/${folderName}`;
-
-    // List tất cả file bên trong (kể cả nested)
-    async function listAllFiles(path) {
-        const { data } = await sb.storage.from(BUCKET_NAME).list(path, { limit: 200 });
-        if (!data) return [];
-        let paths = [];
-        for (const item of data) {
-            if (item.id === null) {
-                // Là thư mục con, đệ quy
-                const sub = await listAllFiles(`${path}/${item.name}`);
-                paths = paths.concat(sub);
-            } else {
-                paths.push(`${path}/${item.name}`);
-            }
-        }
-        return paths;
-    }
-
-    const allFiles = await listAllFiles(folderPath);
-    if (allFiles.length > 0) {
-        await sb.storage.from(BUCKET_NAME).remove(allFiles);
-    }
-
-    showToast(`✅ Đã xóa thư mục "${folderName}"!`, 'success');
-    await renderFileManager();
-};
-
-/* ================================================================
-   TOGGLE PANEL UPLOAD
+   UPLOAD FILE (Lưu DB hiển thị, đẩy Storage vật lý)
    ================================================================ */
 window.toggleUploadPanel = function() {
     const panel = document.getElementById('uploadPanel');
@@ -975,106 +664,194 @@ window.toggleUploadPanel = function() {
     if (isHidden) document.getElementById('newFolderRow').style.display = 'none';
 };
 
-/* ================================================================
-   TẢI XUỐNG FILE
-   ================================================================ */
-window.downloadFile = async function (filePath, displayName) {
-    showToast('Đang tạo link tải... 🦦');
-    const url = await getDownloadUrl(filePath);
-    if (!url) { showToast('❌ Không thể tạo link tải!', 'error'); return; }
-    const a = document.createElement('a');
-    a.href = url; a.download = displayName; a.target = '_blank';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    showToast('✅ Đang tải file...', 'success');
-};
-
-/* ================================================================
-   XÓA FILE
-   ================================================================ */
-window.deleteFileItem = async function (filePath) {
-    if (!confirm('Xóa tài liệu này?')) return;
-    showToast('Đang xóa...');
-    const ok = await deleteFileFromSupabase(filePath);
-    if (ok) { showToast('✅ Đã xóa tài liệu!', 'success'); await renderFileManager(); }
-    else showToast('❌ Xóa thất bại!', 'error');
-};
-
-/* ================================================================
-   UPLOAD FILE VÀO THƯ MỤC HIỆN TẠI
-   ================================================================ */
 window.uploadMoreFile = async function () {
     const btn = document.getElementById('btnUploadMore');
     if (queueMore.length === 0) { showToast('Chọn file trước nhé! 🌸', 'error'); return; }
 
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner"></span>Đang tải ${queueMore.length} file...`;
-
-    // Upload vào path hiện tại (có thể là thư mục con)
-    const targetPath = getCurrentSupabasePath();
-
-    const wrap   = document.getElementById('moreFileProgress');
-    const bar    = document.getElementById('moreFileBar');
-    const status = document.getElementById('moreFileStatus');
-    wrap.classList.add('show');
-    let success = 0;
+    btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>Đang tải ${queueMore.length} file...`;
+    const wrap = document.getElementById('moreFileProgress'); const bar = document.getElementById('moreFileBar'); const status = document.getElementById('moreFileStatus');
+    wrap.classList.add('show'); let success = 0;
 
     for (let i = 0; i < queueMore.length; i++) {
         const file = queueMore[i];
         status.textContent = `⬆️ (${i+1}/${queueMore.length}) ${file.name}`;
         bar.style.width = '0%';
+        let prog = 0; const iv = setInterval(() => { prog = Math.min(prog + Math.random()*15, 85); bar.style.width = prog + '%'; }, 150);
 
-        let prog = 0;
-        const iv = setInterval(() => { prog = Math.min(prog + Math.random()*15, 85); bar.style.width = prog + '%'; }, 150);
-
+        // 1. Chuẩn hóa tên để lưu vật lý lên Storage (Không dấu)
+        const safeSubject = sanitizeForSupabase(currentViewingSubject);
         const safeFileName = sanitizeForSupabase(file.name);
+        const storagePath = `${safeSubject}/${Date.now()}_${safeFileName}`;
 
-        const { error } = await sb.storage
-            .from(BUCKET_NAME)
-            .upload(`${targetPath}/${Date.now()}_${safeFileName}`, file, { cacheControl: '3600', upsert: false });
+        const { error: storageError } = await sb.storage.from(BUCKET_NAME).upload(storagePath, file, { cacheControl: '3600', upsert: false });
 
-        clearInterval(iv);
-        bar.style.width = '100%';
+        clearInterval(iv); bar.style.width = '100%';
 
-        if (error) {
+        if (storageError) {
             status.textContent = `❌ Lỗi: ${file.name}`;
             bar.style.background = 'linear-gradient(90deg,#ff6b6b,#ff9a9e)';
-            await new Promise(r => setTimeout(r, 1200));
-            bar.style.background = '';
+            await new Promise(r => setTimeout(r, 1200)); bar.style.background = '';
         } else {
-            success++;
-            status.textContent = `✅ Xong: ${file.name}`;
+            // 2. Lưu Metadata vào Database (Có dấu tiếng Việt đầy đủ)
+            await sb.from('file_manager').insert({
+                subject_name: currentViewingSubject,
+                parent_id: getCurrentFolderId(),
+                name: file.name, // Tiếng Việt gốc
+                is_folder: false,
+                storage_path: storagePath,
+                file_size: file.size
+            });
+            success++; status.textContent = `✅ Xong: ${file.name}`;
         }
         await new Promise(r => setTimeout(r, 250));
     }
 
     status.textContent = `🎉 Xong ${success}/${queueMore.length} file!`;
     setTimeout(() => { wrap.classList.remove('show'); bar.style.width = '0%'; }, 2200);
-
-    queueMore.length = 0;
-    renderQueue(queueMore, 'queueMore');
-    btn.disabled = false;
-    btn.innerHTML = '☁️ Tải lên';
+    queueMore.length = 0; renderQueue(); btn.disabled = false; btn.innerHTML = '☁️ Tải lên';
     showToast(`✅ Đã tải lên ${success} file!`, 'success');
     await renderFileManager();
 };
 
 /* ================================================================
-   XÓA MÔN HỌC ĐỘNG
+   TẢI XUỐNG 1 FILE
    ================================================================ */
-window.deleteSubject = function (id, e) {
-    e.stopPropagation();
-    if (confirm('Bạn muốn xóa môn này?\n(File trên Supabase không bị xóa — vào môn để xóa file riêng)')) {
-        subjects = subjects.filter(s => s.id !== id);
-        localStorage.setItem('hinhnhan_subjects', JSON.stringify(subjects));
-        renderDynamicSubjects();
-        showToast('✅ Đã xóa môn học!', 'success');
-    }
+window.downloadFile = async function (storagePath, displayName) {
+    showToast('Đang tạo link tải... 🦦');
+    const { data, error } = await sb.storage.from(BUCKET_NAME).createSignedUrl(storagePath, 3600);
+    if (error || !data) { showToast('❌ Không thể tạo link tải!', 'error'); return; }
+    const a = document.createElement('a'); a.href = data.signedUrl; a.download = displayName; a.target = '_blank';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('✅ Đang tải file...', 'success');
 };
 
 /* ================================================================
-   KHỞI TẠO
+   XÓA FILE & THƯ MỤC
    ================================================================ */
-renderDynamicSubjects();
+window.deleteFileItem = async function (dbId, storagePath) {
+    if (!confirm('Xóa tài liệu này?')) return;
+    showToast('Đang xóa...');
+    // 1. Xóa trên Storage
+    await sb.storage.from(BUCKET_NAME).remove([storagePath]);
+    // 2. Xóa trong DB
+    await sb.from('file_manager').delete().eq('id', dbId);
+    showToast('✅ Đã xóa!', 'success'); await renderFileManager();
+};
+
+window.deleteFolder = async function(folderId, folderName, e) {
+    e.stopPropagation();
+    if (!confirm(`Xóa toàn bộ thư mục "${folderName}"?\nLưu ý: Hành động này xóa vĩnh viễn mọi file bên trong.`)) return;
+    showToast('Đang quét file để xóa...');
+
+    // Đệ quy lấy tất cả file con trong DB để xóa vật lý trên Storage trước
+    async function getAllStoragePaths(parentId) {
+        let paths = [];
+        const { data } = await sb.from('file_manager').select('id, is_folder, storage_path').eq('parent_id', parentId);
+        if (data) {
+            for (let item of data) {
+                if (item.is_folder) {
+                    const childPaths = await getAllStoragePaths(item.id);
+                    paths = paths.concat(childPaths);
+                } else if (item.storage_path) {
+                    paths.push(item.storage_path);
+                }
+            }
+        }
+        return paths;
+    }
+
+    const pathsToDelete = await getAllStoragePaths(folderId);
+    if (pathsToDelete.length > 0) {
+        // Xóa lô (batch delete) trên Storage
+        await sb.storage.from(BUCKET_NAME).remove(pathsToDelete);
+    }
+
+    // Xóa Thư mục trên DB (nhờ CASCADE, nó tự xóa mọi record con)
+    await sb.from('file_manager').delete().eq('id', folderId);
+
+    showToast(`✅ Đã xóa "${folderName}"!`, 'success');
+    await renderFileManager();
+};
+
+/* ================================================================
+   TẢI TOÀN BỘ THƯ MỤC (ZIP BẰNG JSZIP)
+   ================================================================ */
+window.downloadFolder = async function(folderId, folderName, e) {
+    e.stopPropagation();
+    showToast('Đang chuẩn bị gói dữ liệu. Chờ xíu nhé... 📦');
+
+    const zip = new JSZip();
+    let fileCount = 0;
+
+    // Đệ quy chui vào từng thư mục để tải file và đưa vào cây thư mục của JSZip
+    async function addFilesToZip(currentFolderId, currentZipFolder) {
+        const { data } = await sb.from('file_manager').select('*').eq('parent_id', currentFolderId);
+        if (!data) return;
+
+        for (const item of data) {
+            if (item.is_folder) {
+                // Tạo thư mục bên trong file ZIP
+                const subZipFolder = currentZipFolder.folder(item.name);
+                await addFilesToZip(item.id, subZipFolder);
+            } else {
+                // Lấy link tải và fetch Blob
+                const { data: urlData } = await sb.storage.from(BUCKET_NAME).createSignedUrl(item.storage_path, 3600);
+                if (urlData) {
+                    try {
+                        const response = await fetch(urlData.signedUrl);
+                        const blob = await response.blob();
+                        currentZipFolder.file(item.name, blob);
+                        fileCount++;
+                    } catch (err) { console.error("Lỗi tải file:", item.name); }
+                }
+            }
+        }
+    }
+
+    await addFilesToZip(folderId, zip);
+
+    if (fileCount === 0) {
+        showToast('Thư mục này rỗng, không có gì để nén cả 🦦', 'error'); return;
+    }
+
+    showToast(`Đang nén ${fileCount} file... 🗜️`);
+    zip.generateAsync({ type: "blob" }).then(function(content) {
+        saveAs(content, `${folderName}.zip`);
+        showToast('✅ Đã tải file ZIP!', 'success');
+    });
+};
+
+/* ================================================================
+   MODAL: THÊM MÔN (Không kèm file)
+   ================================================================ */
+document.getElementById('btnAddSubject').addEventListener('click', () => { document.getElementById('modalAddSubject').classList.add('open'); });
+window.saveNewSubject = function () {
+    const title = document.getElementById('inputSubTitle').value.trim();
+    const tag   = document.getElementById('inputSubTag').value.trim() || 'Môn học';
+    if (!title) { showToast('Nhập tên môn học nhé! 🌸', 'error'); return; }
+
+    dynamicSubjects.push({ id: Date.now(), title, tag });
+    localStorage.setItem('hinhnhan_subjects', JSON.stringify(dynamicSubjects));
+
+    closeModals(); renderAllSubjects(); showToast(`✅ Đã tạo "${title}"!`, 'success');
+    if (!document.getElementById('fadeOverlay').classList.contains('hidden')) document.getElementById('btnExpand').click();
+};
+window.deleteSubject = function (id, e) {
+    e.stopPropagation();
+    if (confirm('Xóa môn học này?\n(Lưu ý: Xóa trên giao diện, file trong Database vẫn còn)')) {
+        dynamicSubjects = dynamicSubjects.filter(s => s.id !== id);
+        localStorage.setItem('hinhnhan_subjects', JSON.stringify(dynamicSubjects));
+        renderAllSubjects(); showToast('✅ Đã xóa môn học!', 'success');
+    }
+};
+
+function closeModals() {
+    document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+    document.getElementById('inputSubTitle').value = ''; document.getElementById('inputSubTag').value = '';
+    queueMore.length = 0; renderQueue();
+}
+
+renderAllSubjects();
 </script>
 </body>
 </html>
