@@ -286,45 +286,49 @@
     </div>
 </div>
 
-<script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-    // Tận dụng thông tin kết nối từ index4.html của bạn
-    const supabaseUrl = 'https://kmouggtquexofrrsvtmk.supabase.co'
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttb3VnZ3RxdWV4b2ZycnN2dG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTAzOTAsImV4cCI6MjA5NDQyNjM5MH0.ACKaXz68CkGGnQW8A4UUVAov9oBBxBVgHe_ac3Tb-yU'
-
-    window.supabase = createClient(supabaseUrl, supabaseKey);
-    window.dispatchEvent(new Event("supabase-ready"));
-</script>
-
 <script>
-window.addEventListener("supabase-ready", () => {
-    const supabase = window.supabase;
-    let subjects = [];
-    let filesData = {};
-    let currentViewingSubject = "";
+    /* === HOA ANH ĐÀO RƠI (Giữ nguyên) === */
+    (function () {
+        const canvas = document.getElementById('sakura-canvas'); const ctx = canvas.getContext('2d');
+        const FALL_SPEED = 50; const PETAL_COUNT = 38;
+        const COLORS = ['rgba(255,182,193,0.85)', 'rgba(255,160,180,0.80)', 'rgba(255,200,210,0.75)', 'rgba(252,220,230,0.70)', 'rgba(255,145,175,0.80)', 'rgba(248,200,215,0.65)'];
+        let W, H, petals = [];
+        function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+        function createPetal(startY) { return { x: Math.random() * W, y: startY !== undefined ? startY : Math.random() * -H, rx: 7 + Math.random() * 7, ry: 4 + Math.random() * 4, rot: Math.random() * Math.PI * 2, vy: FALL_SPEED * (0.85 + Math.random() * 0.3), swingAmp: 18 + Math.random() * 22, swingFreq: 0.4 + Math.random() * 0.5, swingOff: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 1.2, color: COLORS[Math.floor(Math.random() * COLORS.length)], t: Math.random() * 10 }; }
+        function init() { resize(); petals = []; for (let i = 0; i < PETAL_COUNT; i++) petals.push(createPetal(Math.random() * H)); }
+        let last = null;
+        function draw(ts) {
+            if (!last) last = ts; const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+            ctx.clearRect(0, 0, W, H);
+            petals.forEach(p => {
+                p.t += dt; p.y += p.vy * dt; p.rot += p.rotSpeed * dt;
+                const swing = Math.sin(p.t * p.swingFreq * Math.PI * 2 + p.swingOff) * p.swingAmp; const drawX = p.x + swing;
+                if (p.y - p.ry > H) { Object.assign(p, createPetal(-20)); p.t = 0; return; }
+                ctx.save(); ctx.translate(drawX, p.y); ctx.rotate(p.rot); ctx.beginPath(); ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill(); ctx.strokeStyle = 'rgba(220,130,150,0.25)'; ctx.lineWidth = 0.5; ctx.stroke(); ctx.restore();
+            }); requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', resize); init(); requestAnimationFrame(draw);
+    })();
 
+    /* === MỞ RỘNG KHÔNG GIAN (Giữ nguyên) === */
+    document.addEventListener('animationend', function (e) { if (e.animationName === 'slideUpFade') { e.target.classList.remove('entrance-anim'); e.target.style.animationDelay = '0s'; } });
+    document.getElementById('btnExpand').addEventListener('click', function () {
+        const wrapper = document.getElementById('bentoWrapper'); const overlay = document.getElementById('fadeOverlay'); const hiddenCards = document.querySelectorAll('.hidden-card');
+        overlay.classList.add('hidden'); wrapper.style.height = wrapper.scrollHeight + 'px';
+        hiddenCards.forEach((card, i) => { card.style.animationDelay = `${i * 0.1}s`; card.classList.remove('hidden-card'); card.classList.add('entrance-anim'); });
+        setTimeout(() => { wrapper.style.height = wrapper.scrollHeight + 'px'; setTimeout(() => { wrapper.style.height = 'auto'; }, 900); }, 150);
+    });
+
+    /* ====================================================
+       HỆ THỐNG QUẢN LÝ MÔN HỌC & FILE TÀI LIỆU
+    ==================================================== */
+    let subjects = JSON.parse(localStorage.getItem('hinhnhan_subjects') || '[]');
+    let filesData = JSON.parse(localStorage.getItem('hinhnhan_files') || '{}');
+
+    let currentViewingSubject = "";
     const mainGrid = document.getElementById('mainGrid');
 
-    // 1. TẢI DỮ LIỆU TỪ DATABASE (MÁY NÀO CŨNG THẤY)
-    async function loadInitialData() {
-        // Lấy danh sách môn từ bảng 'subjects'
-        const { data: subData } = await supabase.from('subjects').select('*').order('id', { ascending: true });
-        subjects = subData || [];
-
-        // Lấy danh sách link file từ bảng 'study_files'
-        const { data: fData } = await supabase.from('study_files').select('*');
-        filesData = {};
-        if (fData) {
-            fData.forEach(f => {
-                if (!filesData[f.subject_title]) filesData[f.subject_title] = [];
-                filesData[f.subject_title].push(f);
-            });
-        }
-        renderDynamicSubjects();
-    }
-
-    // 2. RENDER GIAO DIỆN BENTO
+    // 1. Render các môn học động (Do người dùng thêm)
     function renderDynamicSubjects() {
         document.querySelectorAll('.dynamic-card').forEach(c => c.remove());
         const isExpanded = document.getElementById('fadeOverlay').classList.contains('hidden');
@@ -335,68 +339,80 @@ window.addEventListener("supabase-ready", () => {
             card.style.background = 'linear-gradient(135deg, #e0c3fc, #8ec5fc)';
             card.style.color = '#fff'; card.style.gridColumn = 'span 1';
 
+            // Bấm vào card thì mở Modal File
             card.onclick = () => openSubjectDetail(sub.title);
 
             card.innerHTML = `
                 <div><span class="tag">📖 ${sub.tag}</span><h2 class="title" style="font-size: 1.5rem;">${sub.title}</h2></div>
-                <div class="action-btn" onclick="deleteSubject('${sub.title}', ${sub.id}, event)"><span class="plus">🗑️</span><span class="arrow">Xóa</span></div>
+                <div class="action-btn" onclick="deleteSubject(${sub.id}, event)"><span class="plus">🗑️</span><span class="arrow">Xóa</span></div>
             `;
             mainGrid.appendChild(card);
         });
-        if (isExpanded) document.getElementById('bentoWrapper').style.height = 'auto';
+
+        if (isExpanded) { document.getElementById('bentoWrapper').style.height = 'auto'; }
     }
 
-    // 3. TẠO MÔN MỚI TRÊN CLOUD
-    window.saveNewSubject = async function() {
+    // 2. Logic đóng/mở Modal
+    function closeModals() {
+        document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+        document.getElementById('inputSubTitle').value = '';
+        document.getElementById('inputSubTag').value = '';
+        document.getElementById('inputSubFile').value = '';
+        document.getElementById('displayFileName').textContent = '';
+    }
+
+    document.getElementById('btnAddSubject').addEventListener('click', () => {
+        document.getElementById('modalAddSubject').classList.add('open');
+    });
+
+    document.getElementById('inputSubFile').addEventListener('change', function() {
+        if(this.files.length > 0) {
+            document.getElementById('displayFileName').textContent = this.files[0].name;
+        }
+    });
+
+    // 3. Logic Tạo Môn Mới
+    window.saveNewSubject = function() {
         const title = document.getElementById('inputSubTitle').value.trim();
         const tag = document.getElementById('inputSubTag').value.trim() || "Môn học";
         const fileInput = document.getElementById('inputSubFile');
-        const submitBtn = document.querySelector('#modalAddSubject .btn-submit');
 
-        if (!title) return alert("Nhập tên môn học nhé!");
+        if (!title) { alert("Bạn ơi nhớ nhập tên môn học nhé!"); return; }
 
-        submitBtn.textContent = "Đang đồng bộ Cloud...";
-        submitBtn.disabled = true;
+        subjects.push({ id: Date.now(), title, tag });
+        localStorage.setItem('hinhnhan_subjects', JSON.stringify(subjects));
 
-        const { error } = await supabase.from('subjects').insert([{ title, tag }]);
-
-        if (!error && fileInput.files.length > 0) {
-            await uploadFileToSupabase(title, fileInput.files[0]);
+        if(fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            if(!filesData[title]) filesData[title] = [];
+            filesData[title].push({ id: Date.now(), name: fileName });
+            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
         }
 
-        await loadInitialData();
-        submitBtn.textContent = "Tạo mới 🌸";
-        submitBtn.disabled = false;
         closeModals();
-    };
+        renderDynamicSubjects();
 
-    // 4. UPLOAD VÀ LƯU LINK VÀO DB
-    async function uploadFileToSupabase(subjectTitle, file) {
-        const safeSubject = subjectTitle.replace(/[^a-zA-Z0-9]/g, '_');
-        const filePath = `${safeSubject}/${Date.now()}_${file.name}`;
-
-        const { error } = await supabase.storage.from('study_materials').upload(filePath, file);
-        if (error) return alert("Lỗi Storage: " + error.message);
-
-        const { data: publicUrlData } = supabase.storage.from('study_materials').getPublicUrl(filePath);
-
-        await supabase.from('study_files').insert([{
-            subject_title: subjectTitle,
-            name: file.name,
-            url: publicUrlData.publicUrl,
-            path: filePath
-        }]);
-    }
-
-    // ... CÁC HÀM PHỤ TRỢ (XÓA, CHI TIẾT) GIỮ NGUYÊN LOGIC NHƯNG DÙNG DATABASE ...
-    window.deleteSubject = async function(title, id, e) {
-        e.stopPropagation();
-        if(confirm(`Xóa môn ${title} và toàn bộ tài liệu?`)) {
-            await supabase.from('subjects').delete().eq('id', id);
-            await loadInitialData();
+        if (!document.getElementById('fadeOverlay').classList.contains('hidden')) {
+            document.getElementById('btnExpand').click();
         }
     };
 
+    // 4. Xóa môn học động
+    window.deleteSubject = function(id, e) {
+        e.stopPropagation();
+        if(confirm("Bạn muốn xóa môn này và toàn bộ tài liệu bên trong?")) {
+            const subToDelete = subjects.find(s => s.id === id);
+            if(subToDelete) {
+                delete filesData[subToDelete.title];
+                localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+            }
+            subjects = subjects.filter(s => s.id !== id);
+            localStorage.setItem('hinhnhan_subjects', JSON.stringify(subjects));
+            renderDynamicSubjects();
+        }
+    };
+
+    // 5. Mở Modal Chi tiết Môn & Vẽ danh sách File
     window.openSubjectDetail = function(title) {
         currentViewingSubject = title;
         document.getElementById('detailTitle').textContent = `Tài liệu: ${title}`;
@@ -407,39 +423,44 @@ window.addEventListener("supabase-ready", () => {
     function renderFileList() {
         const listDiv = document.getElementById('detailFileList');
         const files = filesData[currentViewingSubject] || [];
+
         if (files.length === 0) {
-            listDiv.innerHTML = `<div style="text-align:center; padding: 20px; opacity:0.6;">Trống trơn à... 🦦</div>`;
+            listDiv.innerHTML = `<div style="text-align:center; padding: 20px; opacity:0.6;">Chưa có tài liệu nào. Tải lên ngay nhé! 🦦</div>`;
             return;
         }
+
         listDiv.innerHTML = files.map(f => `
             <div class="file-item">
-                <a href="${f.url}" target="_blank">📄 ${f.name}</a>
-                <button class="del-file-btn" onclick="deleteFile(${f.id}, '${f.path}')">×</button>
+                <a href="#" onclick="alert('Đang chạy ở môi trường Local nên chưa tải/mở được file. Khi tích hợp Supabase sẽ click để xem được nha!')">📄 ${f.name}</a>
+                <button class="del-file-btn" onclick="deleteFile(${f.id})" title="Xóa file">×</button>
             </div>
         `).join('');
     }
 
-    window.uploadMoreFile = async function() {
+    // 6. Xóa File & Thêm File trong Modal Chi Tiết
+    window.deleteFile = function(fileId) {
+        if(confirm("Xóa tài liệu này?")) {
+            filesData[currentViewingSubject] = filesData[currentViewingSubject].filter(f => f.id !== fileId);
+            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+            renderFileList();
+        }
+    };
+
+    window.uploadMoreFile = function() {
         const fileInput = document.getElementById('inputUploadMoreFile');
         if(fileInput.files.length > 0) {
-            await uploadFileToSupabase(currentViewingSubject, fileInput.files[0]);
-            await loadInitialData();
+            const fileName = fileInput.files[0].name;
+            if(!filesData[currentViewingSubject]) filesData[currentViewingSubject] = [];
+
+            filesData[currentViewingSubject].push({ id: Date.now(), name: fileName });
+            localStorage.setItem('hinhnhan_files', JSON.stringify(filesData));
+
             fileInput.value = '';
             renderFileList();
         }
     };
 
-    window.deleteFile = async function(fileId, filePath) {
-        if(confirm("Xóa file vĩnh viễn?")) {
-            await supabase.storage.from('study_materials').remove([filePath]);
-            await supabase.from('study_files').delete().eq('id', fileId);
-            await loadInitialData();
-            renderFileList();
-        }
-    };
-
-    loadInitialData(); // Gọi dữ liệu ngay khi khởi động
-});
+    renderDynamicSubjects();
 </script>
 </body>
 </html>
